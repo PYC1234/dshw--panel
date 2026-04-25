@@ -4,8 +4,8 @@
 
 ## 个人信息
 
-- 姓名：XXX（请填写）
-- 邮箱：<xxx@example.com>（请填写）
+- 姓名：彭远超
+- 邮箱：yuanchao29zoe@163.com
 
 ### 数据来源
 - CSMAR，下载时间：2026年4月23日
@@ -29,10 +29,10 @@
 - 环境：`dsfin_py311` (conda)
 
 ### GitHub 仓库
-https://github.com/[用户名]/dshw--panel
+https://github.com/PYC1234/dshw--panel
 
 ### Quarto Book（如完成）
-https://[用户名].github.io/dshw--panel/
+https://PYC1234.github.io/dshw--panel/
 
 ### 主要发现
 
