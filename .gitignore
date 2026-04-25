@@ -47,3 +47,6 @@ _quarto/
 
 # Node_modules（如果有）
 # node_modules/
+
+/.quarto/
+**/*.quarto_ipynb

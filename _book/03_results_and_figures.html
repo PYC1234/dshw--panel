@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.9.36">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>第三部分：结果汇总与图形输出 – 上市公司资本结构影响因素分析</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="site_libs/quarto-search/fuse.min.js"></script>
+<script src="site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="./">
+<link href="./02_descriptive_stats.html" rel="prev">
+<script src="site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting-845c23b38eaddc0f92fda52bfe77a8c8.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap-832e3d7b6b94ddcc90a000f8fabe51a9.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+<style>html{ scroll-behavior: smooth; }</style>
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./03_results_and_figures.html"><span class="chapter-title">第三部分：结果汇总与图形输出</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header sidebar-header-stacked">
+      <a href="./index.html" class="sidebar-logo-link">
+      <img src="./images/book-logo.png" alt="" class="sidebar-logo light-content py-0 d-lg-inline d-none">
+      <img src="./images/book-logo.png" alt="" class="sidebar-logo dark-content py-0 d-lg-inline d-none">
+      </a>
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">上市公司资本结构影响因素分析</a> 
+        <div class="sidebar-tools-main">
+    <a href="https://github.com/PYC1234/dshw--panel" title="Source Code" class="quarto-navigation-tool px-1" aria-label="Source Code"><i class="bi bi-github"></i></a>
+</div>
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">上市公司资本结构影响因素分析</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_data_processing.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第一部分：数据获取与处理</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_descriptive_stats.html" class="sidebar-item-text sidebar-link"><span class="chapter-title">第二部分：描述性统计</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_results_and_figures.html" class="sidebar-item-text sidebar-link active"><span class="chapter-title">第三部分：结果汇总与图形输出</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#fig-4-soe调节效应边际效应图基于m3交互项回归" id="toc-fig-4-soe调节效应边际效应图基于m3交互项回归" class="nav-link active" data-scroll-target="#fig-4-soe调节效应边际效应图基于m3交互项回归">Fig 4: SOE调节效应边际效应图（基于M3交互项回归）</a></li>
+  <li><a href="#fig-5-时变系数-hatbeta_t-时序图m4" id="toc-fig-5-时变系数-hatbeta_t-时序图m4" class="nav-link" data-scroll-target="#fig-5-时变系数-hatbeta_t-时序图m4">Fig 5: 时变系数 <span class="math inline">\(\hat{\beta}_t\)</span> 时序图（M4）</a></li>
+  <li><a href="#fig-6-函数系数模型-hatbetasize-图m5" id="toc-fig-6-函数系数模型-hatbetasize-图m5" class="nav-link" data-scroll-target="#fig-6-函数系数模型-hatbetasize-图m5">Fig 6: 函数系数模型 <span class="math inline">\(\hat{\beta}(Size)\)</span> 图（M5）</a></li>
+  <li><a href="#fig-7-门槛检验似然比统计量图m6" id="toc-fig-7-门槛检验似然比统计量图m6" class="nav-link" data-scroll-target="#fig-7-门槛检验似然比统计量图m6">Fig 7: 门槛检验似然比统计量图（M6）</a></li>
+  <li><a href="#m1-m6-回归结果汇总表" id="toc-m1-m6-回归结果汇总表" class="nav-link" data-scroll-target="#m1-m6-回归结果汇总表">M1-M6 回归结果汇总表</a></li>
+  <li><a href="#讨论问题一去杠杆政策冲击-npr与杠杆率的负向关联" id="toc-讨论问题一去杠杆政策冲击-npr与杠杆率的负向关联" class="nav-link" data-scroll-target="#讨论问题一去杠杆政策冲击-npr与杠杆率的负向关联">讨论问题一：去杠杆政策冲击 — NPR与杠杆率的负向关联</a>
+  <ul class="collapse">
+  <li><a href="#核心发现" id="toc-核心发现" class="nav-link" data-scroll-target="#核心发现">1. 核心发现</a></li>
+  <li><a href="#去杠杆渠道机制" id="toc-去杠杆渠道机制" class="nav-link" data-scroll-target="#去杠杆渠道机制">2. 去杠杆渠道机制</a></li>
+  <li><a href="#m4时变系数支持政策冲击解释" id="toc-m4时变系数支持政策冲击解释" class="nav-link" data-scroll-target="#m4时变系数支持政策冲击解释">3. M4时变系数支持政策冲击解释</a></li>
+  <li><a href="#soe与民企的差异" id="toc-soe与民企的差异" class="nav-link" data-scroll-target="#soe与民企的差异">4. SOE与民企的差异</a></li>
+  </ul></li>
+  <li><a href="#讨论问题二产权调节效应-soe对npr-lev关系的增强作用" id="toc-讨论问题二产权调节效应-soe对npr-lev关系的增强作用" class="nav-link" data-scroll-target="#讨论问题二产权调节效应-soe对npr-lev关系的增强作用">讨论问题二：产权调节效应 — SOE对NPR-Lev关系的增强作用</a>
+  <ul class="collapse">
+  <li><a href="#核心发现-1" id="toc-核心发现-1" class="nav-link" data-scroll-target="#核心发现-1">1. 核心发现</a></li>
+  <li><a href="#理论解释产权与预算软约束" id="toc-理论解释产权与预算软约束" class="nav-link" data-scroll-target="#理论解释产权与预算软约束">2. 理论解释：产权与预算软约束</a></li>
+  <li><a href="#fig-4的边际效应图解读" id="toc-fig-4的边际效应图解读" class="nav-link" data-scroll-target="#fig-4的边际效应图解读">3. Fig 4的边际效应图解读</a></li>
+  <li><a href="#政策含义" id="toc-政策含义" class="nav-link" data-scroll-target="#政策含义">4. 政策含义</a></li>
+  </ul></li>
+  <li><a href="#讨论问题三规模异质性-规模如何调节npr与杠杆率的关系" id="toc-讨论问题三规模异质性-规模如何调节npr与杠杆率的关系" class="nav-link" data-scroll-target="#讨论问题三规模异质性-规模如何调节npr与杠杆率的关系">讨论问题三：规模异质性 — 规模如何调节NPR与杠杆率的关系</a>
+  <ul class="collapse">
+  <li><a href="#m5核心发现多项式调节效应" id="toc-m5核心发现多项式调节效应" class="nav-link" data-scroll-target="#m5核心发现多项式调节效应">1. M5核心发现：多项式调节效应</a></li>
+  <li><a href="#规模异质性的经济机制" id="toc-规模异质性的经济机制" class="nav-link" data-scroll-target="#规模异质性的经济机制">2. 规模异质性的经济机制</a></li>
+  <li><a href="#fig-6的βsize曲线解读" id="toc-fig-6的βsize曲线解读" class="nav-link" data-scroll-target="#fig-6的βsize曲线解读">3. Fig 6的β(Size)曲线解读</a></li>
+  <li><a href="#与门槛效应的联系m6" id="toc-与门槛效应的联系m6" class="nav-link" data-scroll-target="#与门槛效应的联系m6">4. 与门槛效应的联系（M6）</a></li>
+  </ul></li>
+  <li><a href="#讨论问题四门槛效应检验-规模门槛存在的实证与理论意义" id="toc-讨论问题四门槛效应检验-规模门槛存在的实证与理论意义" class="nav-link" data-scroll-target="#讨论问题四门槛效应检验-规模门槛存在的实证与理论意义">讨论问题四：门槛效应检验 — 规模门槛存在的实证与理论意义</a>
+  <ul class="collapse">
+  <li><a href="#m6门槛估计结果" id="toc-m6门槛估计结果" class="nav-link" data-scroll-target="#m6门槛估计结果">1. M6门槛估计结果</a></li>
+  <li><a href="#门槛效应的识别策略" id="toc-门槛效应的识别策略" class="nav-link" data-scroll-target="#门槛效应的识别策略">2. 门槛效应的识别策略</a></li>
+  <li><a href="#两区制模型的系数差异" id="toc-两区制模型的系数差异" class="nav-link" data-scroll-target="#两区制模型的系数差异">3. 两区制模型的系数差异</a></li>
+  <li><a href="#门槛效应的理论解释" id="toc-门槛效应的理论解释" class="nav-link" data-scroll-target="#门槛效应的理论解释">4. 门槛效应的理论解释</a></li>
+  <li><a href="#政策含义-1" id="toc-政策含义-1" class="nav-link" data-scroll-target="#政策含义-1">5. 政策含义</a></li>
+  <li><a href="#稳健性讨论" id="toc-稳健性讨论" class="nav-link" data-scroll-target="#稳健性讨论">6. 稳健性讨论</a></li>
+  </ul></li>
+  </ul>
+<div class="toc-actions"><ul><li><a href="https://github.com/PYC1234/dshw--panel/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-title">第三部分：结果汇总与图形输出</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>本notebook完成以下任务： 1. 运行 Stata 回归（通过 nbstata 或手动执行 do 文件） 2. 读取 Stata 回归结果，生成 Fig 4-7（Fig 1-3 在 02_descriptive_stats.ipynb） 3. 汇总 M1-M6 回归结果表 4. <strong>核心讨论问题回答</strong></p>
+<div id="cell-1" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy <span class="im">import</span> stats</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">'ignore'</span>)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置中文显示</span></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'font.sans-serif'</span>] <span class="op">=</span> [<span class="st">'SimHei'</span>, <span class="st">'Microsoft YaHei'</span>]</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>plt.rcParams[<span class="st">'axes.unicode_minus'</span>] <span class="op">=</span> <span class="va">False</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="co"># 设置工作目录</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>os.chdir(<span class="vs">r"C:</span><span class="er">\</span><span class="vs">Users</span><span class="ch">\2</span><span class="vs">9248</span><span class="dv">\D</span><span class="vs">esktop</span><span class="dv">\d</span><span class="vs">sfin</span><span class="er">\</span><span class="vs">PYC-ex_P03"</span>)</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取清洗后数据</span></span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/clean/panel_data.csv"</span>)</span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"数据加载成功: </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> 观测, </span><span class="sc">{</span>df[<span class="st">'stkcd'</span>]<span class="sc">.</span>nunique()<span class="sc">}</span><span class="ss"> 家公司"</span>)</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 检查output目录结构</span></span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>output_files <span class="op">=</span> os.listdir(<span class="st">'output'</span>)</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">output目录文件: </span><span class="sc">{</span><span class="bu">sorted</span>(output_files)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<section id="fig-4-soe调节效应边际效应图基于m3交互项回归" class="level2">
+<h2 class="anchored" data-anchor-id="fig-4-soe调节效应边际效应图基于m3交互项回归">Fig 4: SOE调节效应边际效应图（基于M3交互项回归）</h2>
+<p>M3回归方程： <span class="math display">\[Lev_{it} = \alpha_i + \lambda_t + \beta_1 NPR_{it} + \beta_2 (NPR_{it} \times SOE_i) + \beta_3 SOE_i + \boldsymbol{\gamma}' \boldsymbol{X}_{it}\]</span></p>
+<p><strong>注意</strong>：由于模型包含个体固定效应 <span class="math inline">\(\alpha_i\)</span>，时不变的 <span class="math inline">\(SOE_i\)</span> 本身会被吸收。<span class="math inline">\(\beta_2\)</span> 衡量的是 SOE 对 NPR-Lev <strong>斜率</strong>的调节作用。</p>
+<blockquote class="blockquote">
+<p><strong>先运行 Stata 完成 M3 回归，再生成此图</strong>：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="kw">do</span> <span class="kw">do</span>/01_baseline_regression.<span class="kw">do</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>该 do 文件会将 M3 结果保存到 <code>output/regression_results_m1_m3.csv</code></p>
+</blockquote>
+<div id="cell-3" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ===== Fig 4: SOE调节效应边际效应图 =====# 方法：从Stata结果读取M3系数，或使用Python的pyfixest/linearmodels进行估计## M3回归方程（Stata reghdfe 版本）:#   lev ~ npr + npr_soe + size + tang + growth + ndts | stkcd + year# 注意：SOE 是时不变变量，个体固定效应中会被吸收，公式中不显式加入# 尝试读取Stata保存的回归结果try:    m3_results = pd.read_csv("output/regression_results_m1_m3.csv")    print("已读取Stata M3回归结果")    print(m3_results)    has_stata_results = Trueexcept FileNotFoundError:    print("Stata结果文件不存在，请先运行: do do/01_baseline_regression.do")    has_stata_results = False# ---- 用 pyfixest 复现 M3（可选，需安装 pyfixest）----try:    import pyfixest as pf    print("\n使用 pyfixest 进行 M3 交互项回归...")    df_m3 = df.copy()    df_m3['npr_soe'] = df_m3['npr'] * df_m3['soe']    # 注意：SOE 是时不变变量，被个体FE吸收，不在公式中显式加入    fit_m3 = pf.feols(        "lev ~ npr + npr_soe + size + tang + growth + ndts | stkcd + year",        data=df_m3,        vcov={"CRV1": "stkcd + year"}    )    print("\n" + "=" * 70)    print("M3: 交互项回归结果 (pyfixest TWFE)")    print("=" * 70)    print(fit_m3.summary())    npr_coef = fit_m3.coef()['npr']    npr_soe_coef = fit_m3.coef()['npr_soe']    print(f"\n核心系数:")    print(f"  NPR系数（民营企业）: {npr_coef:.4f}")    print(f"  NPR x SOE系数: {npr_soe_coef:.4f}")    print(f"  国有企业中NPR效应: {npr_coef + npr_soe_coef:.4f}")    # ---- 绘制Fig 4: 边际效应图 ----    npr_range = np.linspace(df_m3['npr'].quantile(0.05), df_m3['npr'].quantile(0.95), 100)    pred_private = npr_coef * npr_range    pred_soe = (npr_coef + npr_soe_coef) * npr_range    fig, ax = plt.subplots(figsize=(10, 6))    ax.plot(npr_range, pred_private, 'b-', linewidth=2.5, label='Private (SOE=0)')    ax.plot(npr_range, pred_soe, 'r--', linewidth=2.5, label='SOE (SOE=1)')    ax.axhline(0, color='gray', linestyle=':', alpha=0.5)    ax.set_xlabel('NPR (Net Profitability)', fontsize=13)    ax.set_ylabel('Predicted Leverage (Lev)', fontsize=13)    ax.set_title('Fig 4: Moderating Effect of SOE on NPR-Lev Relationship (M3)',                  fontsize=14, fontweight='bold')    ax.legend(fontsize=12, loc='best')    ax.grid(True, alpha=0.3)    plt.tight_layout()    plt.savefig('output/figures/Fig4_soe_moderation.png', dpi=300, bbox_inches='tight')    plt.show()    print("\nFig 4 已保存至 output/figures/Fig4_soe_moderation.png")except ImportError:    print("\npyfixest 未安装，将跳过 M3 Python 估计。")    print("Fig 4 使用 Stata 生成的图（见 output/figures/Fig4_soe_moderation.png）")    print("如需在 Python 中复现，请安装: pip install pyfixest")</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="fig-5-时变系数-hatbeta_t-时序图m4" class="level2">
+<h2 class="anchored" data-anchor-id="fig-5-时变系数-hatbeta_t-时序图m4">Fig 5: 时变系数 <span class="math inline">\(\hat{\beta}_t\)</span> 时序图（M4）</h2>
+<blockquote class="blockquote">
+<p><strong>先运行 Stata</strong>：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb4"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="kw">do</span> <span class="kw">do</span>/02_timevarying_coef.<span class="kw">do</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>该 do 文件会保存 β_t 序列到 <code>output/beta_time_coef.csv</code></p>
+</blockquote>
+<div id="cell-5" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ===== Fig 5: 时变系数 β_t 时序图（M4）=====</span></span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>    beta_time <span class="op">=</span> pd.read_csv(<span class="st">"output/beta_time_coef.csv"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"已读取 β_t 时序数据:"</span>)</span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(beta_time.head(<span class="dv">10</span>))</span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>    years <span class="op">=</span> beta_time[<span class="st">'year'</span>]</span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> beta_time[<span class="st">'coef'</span>]  <span class="co"># 列名是 'coef' 不是 'beta'</span></span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>    ci_low <span class="op">=</span> beta_time[<span class="st">'ci_low'</span>]</span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>    ci_high <span class="op">=</span> beta_time[<span class="st">'ci_high'</span>]</span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">6</span>))</span>
+<span id="cb5-13"><a href="#cb5-13" aria-hidden="true" tabindex="-1"></a>    ax.plot(years, beta, <span class="st">'b-o'</span>, linewidth<span class="op">=</span><span class="dv">2</span>, markersize<span class="op">=</span><span class="dv">7</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">hat{</span><span class="dv">\b</span><span class="vs">eta}_t</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb5-14"><a href="#cb5-14" aria-hidden="true" tabindex="-1"></a>    ax.fill_between(years, ci_low, ci_high, alpha<span class="op">=</span><span class="fl">0.2</span>, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'95% CI'</span>)</span>
+<span id="cb5-15"><a href="#cb5-15" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb5-16"><a href="#cb5-16" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'Year'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb5-17"><a href="#cb5-17" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">hat{</span><span class="dv">\b</span><span class="vs">eta}_t</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">NPR Coefficient</span><span class="kw">)</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb5-18"><a href="#cb5-18" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="st">'Fig 5: Time-Varying β of NPR on Leverage (M4)'</span>, fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb5-19"><a href="#cb5-19" aria-hidden="true" tabindex="-1"></a>    ax.legend(fontsize<span class="op">=</span><span class="dv">11</span>)</span>
+<span id="cb5-20"><a href="#cb5-20" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb5-21"><a href="#cb5-21" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-22"><a href="#cb5-22" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 标注重要宏观事件</span></span>
+<span id="cb5-23"><a href="#cb5-23" aria-hidden="true" tabindex="-1"></a>    events <span class="op">=</span> {<span class="dv">2015</span>: <span class="st">'去杠杆'</span>, <span class="dv">2018</span>: <span class="st">'中美贸易摩擦'</span>, <span class="dv">2020</span>: <span class="st">'COVID-19'</span>, <span class="dv">2022</span>: <span class="st">'经济下行'</span>}</span>
+<span id="cb5-24"><a href="#cb5-24" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> yr, label <span class="kw">in</span> events.items():</span>
+<span id="cb5-25"><a href="#cb5-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> yr <span class="kw">in</span> years.values:</span>
+<span id="cb5-26"><a href="#cb5-26" aria-hidden="true" tabindex="-1"></a>            idx <span class="op">=</span> <span class="bu">list</span>(years).index(yr)</span>
+<span id="cb5-27"><a href="#cb5-27" aria-hidden="true" tabindex="-1"></a>            ax.annotate(label, xy<span class="op">=</span>(yr, beta.iloc[idx]), </span>
+<span id="cb5-28"><a href="#cb5-28" aria-hidden="true" tabindex="-1"></a>                       xytext<span class="op">=</span>(yr, beta.iloc[idx] <span class="op">+</span> <span class="fl">0.05</span>),</span>
+<span id="cb5-29"><a href="#cb5-29" aria-hidden="true" tabindex="-1"></a>                       fontsize<span class="op">=</span><span class="dv">9</span>, ha<span class="op">=</span><span class="st">'center'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb5-30"><a href="#cb5-30" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-31"><a href="#cb5-31" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb5-32"><a href="#cb5-32" aria-hidden="true" tabindex="-1"></a>    plt.savefig(<span class="st">'output/figures/Fig5_beta_time.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb5-33"><a href="#cb5-33" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb5-34"><a href="#cb5-34" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Fig 5 已保存至 output/figures/Fig5_beta_time.png"</span>)</span>
+<span id="cb5-35"><a href="#cb5-35" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb5-36"><a href="#cb5-36" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
+<span id="cb5-37"><a href="#cb5-37" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"β_t 时序数据不存在，请先运行: do do/02_timevarying_coef.do"</span>)</span>
+<span id="cb5-38"><a href="#cb5-38" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb5-39"><a href="#cb5-39" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"读取数据时出错: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="fig-6-函数系数模型-hatbetasize-图m5" class="level2">
+<h2 class="anchored" data-anchor-id="fig-6-函数系数模型-hatbetasize-图m5">Fig 6: 函数系数模型 <span class="math inline">\(\hat{\beta}(Size)\)</span> 图（M5）</h2>
+<blockquote class="blockquote">
+<p><strong>先运行 Stata</strong>：</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode stata code-with-copy"><code class="sourceCode stata"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="kw">do</span> <span class="kw">do</span>/03_functional_coef.<span class="kw">do</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>该 do 文件会保存 β(Size) 序列到 <code>output/beta_size_coef.csv</code></p>
+</blockquote>
+<div id="cell-7" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ===== Fig 6: β(Size) 函数系数图（M5）=====</span></span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="cf">try</span>:</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    beta_size <span class="op">=</span> pd.read_csv(<span class="st">"output/beta_size_coef.csv"</span>)</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"已读取 β(Size) 数据:"</span>)</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(beta_size.head(<span class="dv">10</span>))</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>    size_vals <span class="op">=</span> beta_size[<span class="st">'siz'</span>]  <span class="co"># 列名是 'siz'</span></span>
+<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>    beta <span class="op">=</span> beta_size[<span class="st">'val'</span>]       <span class="co"># 列名是 'val'</span></span>
+<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    ci_low <span class="op">=</span> beta_size[<span class="st">'ci_l'</span>]   <span class="co"># 列名是 'ci_l'</span></span>
+<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    ci_high <span class="op">=</span> beta_size[<span class="st">'ci_h'</span>]  <span class="co"># 列名是 'ci_h'</span></span>
+<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-12"><a href="#cb7-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 标注样本分位数</span></span>
+<span id="cb7-13"><a href="#cb7-13" aria-hidden="true" tabindex="-1"></a>    p10 <span class="op">=</span> df[<span class="st">'size'</span>].quantile(<span class="fl">0.10</span>)</span>
+<span id="cb7-14"><a href="#cb7-14" aria-hidden="true" tabindex="-1"></a>    p25 <span class="op">=</span> df[<span class="st">'size'</span>].quantile(<span class="fl">0.25</span>)</span>
+<span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>    median <span class="op">=</span> df[<span class="st">'size'</span>].quantile(<span class="fl">0.50</span>)</span>
+<span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>    p75 <span class="op">=</span> df[<span class="st">'size'</span>].quantile(<span class="fl">0.75</span>)</span>
+<span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>    p90 <span class="op">=</span> df[<span class="st">'size'</span>].quantile(<span class="fl">0.90</span>)</span>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>    fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a>    ax.plot(size_vals, beta, <span class="st">'b-'</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">hat{</span><span class="dv">\b</span><span class="vs">eta}</span><span class="kw">(</span><span class="vs">Size</span><span class="kw">)</span><span class="dv">$</span><span class="vs">'</span>)</span>
+<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a>    ax.fill_between(size_vals, ci_low, ci_high, alpha<span class="op">=</span><span class="fl">0.2</span>, color<span class="op">=</span><span class="st">'blue'</span>, label<span class="op">=</span><span class="st">'95% CI'</span>)</span>
+<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>    ax.axhline(<span class="dv">0</span>, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="dv">1</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 标注分位数线</span></span>
+<span id="cb7-25"><a href="#cb7-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> pct, val <span class="kw">in</span> [(<span class="st">'P10'</span>, p10), (<span class="st">'P25'</span>, p25), (<span class="st">'Median'</span>, median), (<span class="st">'P75'</span>, p75), (<span class="st">'P90'</span>, p90)]:</span>
+<span id="cb7-26"><a href="#cb7-26" aria-hidden="true" tabindex="-1"></a>        ax.axvline(val, color<span class="op">=</span><span class="st">'gray'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, alpha<span class="op">=</span><span class="fl">0.5</span>)</span>
+<span id="cb7-27"><a href="#cb7-27" aria-hidden="true" tabindex="-1"></a>        ax.text(val, ax.get_ylim()[<span class="dv">1</span>] <span class="op">*</span> <span class="fl">0.95</span>, <span class="ss">f'</span><span class="sc">{</span>pct<span class="sc">}</span><span class="ch">\n</span><span class="sc">{</span>val<span class="sc">:.1f}</span><span class="ss">'</span>, </span>
+<span id="cb7-28"><a href="#cb7-28" aria-hidden="true" tabindex="-1"></a>                fontsize<span class="op">=</span><span class="dv">8</span>, ha<span class="op">=</span><span class="st">'center'</span>, alpha<span class="op">=</span><span class="fl">0.7</span>)</span>
+<span id="cb7-29"><a href="#cb7-29" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-30"><a href="#cb7-30" aria-hidden="true" tabindex="-1"></a>    ax.set_xlabel(<span class="st">'Size (Log Total Assets)'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-31"><a href="#cb7-31" aria-hidden="true" tabindex="-1"></a>    ax.set_ylabel(<span class="vs">r'</span><span class="dv">$</span><span class="er">\</span><span class="vs">hat{</span><span class="dv">\b</span><span class="vs">eta}</span><span class="dv">$</span><span class="vs"> </span><span class="kw">(</span><span class="vs">NPR Coefficient</span><span class="kw">)</span><span class="vs">'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb7-32"><a href="#cb7-32" aria-hidden="true" tabindex="-1"></a>    ax.set_title(<span class="st">'Fig 6: β(Size): Marginal Effect of NPR on Leverage (M5)'</span>, </span>
+<span id="cb7-33"><a href="#cb7-33" aria-hidden="true" tabindex="-1"></a>                 fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb7-34"><a href="#cb7-34" aria-hidden="true" tabindex="-1"></a>    ax.legend(fontsize<span class="op">=</span><span class="dv">11</span>, loc<span class="op">=</span><span class="st">'best'</span>)</span>
+<span id="cb7-35"><a href="#cb7-35" aria-hidden="true" tabindex="-1"></a>    ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb7-36"><a href="#cb7-36" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-37"><a href="#cb7-37" aria-hidden="true" tabindex="-1"></a>    plt.tight_layout()</span>
+<span id="cb7-38"><a href="#cb7-38" aria-hidden="true" tabindex="-1"></a>    plt.savefig(<span class="st">'output/figures/Fig6_beta_size_poly.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb7-39"><a href="#cb7-39" aria-hidden="true" tabindex="-1"></a>    plt.show()</span>
+<span id="cb7-40"><a href="#cb7-40" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">Fig 6 已保存至 output/figures/Fig6_beta_size_poly.png"</span>)</span>
+<span id="cb7-41"><a href="#cb7-41" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb7-42"><a href="#cb7-42" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">FileNotFoundError</span>:</span>
+<span id="cb7-43"><a href="#cb7-43" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"β(Size) 数据不存在，请先运行: do do/03_functional_coef.do"</span>)</span>
+<span id="cb7-44"><a href="#cb7-44" aria-hidden="true" tabindex="-1"></a><span class="cf">except</span> <span class="pp">Exception</span> <span class="im">as</span> e:</span>
+<span id="cb7-45"><a href="#cb7-45" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"读取数据时出错: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="fig-7-门槛检验似然比统计量图m6" class="level2">
+<h2 class="anchored" data-anchor-id="fig-7-门槛检验似然比统计量图m6">Fig 7: 门槛检验似然比统计量图（M6）</h2>
+<blockquote class="blockquote">
+<p><strong>门槛模型说明</strong>：M6 使用 Hansen(1999) 面板门槛模型，估计 NPR 对杠杆率的效应在企业规模（Size）门槛处的突变。</p>
+<p>若无法运行 Stata <code>xthreg</code>（M6.do 文件需在 Stata 中执行 <code>do do/03_functional_coef.do</code>）， 本 cell 提供 Python 实现，使用 Grid Search 重建 LR 曲线。</p>
+</blockquote>
+<div id="cell-9" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ===== Fig 7: 门槛检验似然比统计量图（M6）=====</span></span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Python实现：使用Grid Search计算LR曲线</span></span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 门槛模型: Lev_it = alpha_i + lambda_t + beta1*NPR_it*I(size&lt;=gamma) + beta2*NPR_it*I(size&gt;gamma) + controls</span></span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"M6: 门槛模型 (Python 实现 — Grid Search LR曲线)"</span>)</span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-9"><a href="#cb8-9" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 1. 读取M5多项式系数 ----</span></span>
+<span id="cb8-10"><a href="#cb8-10" aria-hidden="true" tabindex="-1"></a><span class="co"># 从M5回归结果 (reghdfe, 见regression_m5_m6.log) 中提取的系数:</span></span>
+<span id="cb8-11"><a href="#cb8-11" aria-hidden="true" tabindex="-1"></a><span class="co"># lev = -32.075*npr + 2.8531*npr*size - 0.0645*npr*size^2 + 0.0837*size + ...</span></span>
+<span id="cb8-12"><a href="#cb8-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Beta(Size) = -32.075 + 2.853*Size - 0.0645*Size^2</span></span>
+<span id="cb8-13"><a href="#cb8-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-14"><a href="#cb8-14" aria-hidden="true" tabindex="-1"></a>m5_coefs <span class="op">=</span> {</span>
+<span id="cb8-15"><a href="#cb8-15" aria-hidden="true" tabindex="-1"></a>    <span class="st">'npr'</span>: <span class="op">-</span><span class="fl">32.075</span>,</span>
+<span id="cb8-16"><a href="#cb8-16" aria-hidden="true" tabindex="-1"></a>    <span class="st">'npr_size'</span>: <span class="fl">2.853</span>,</span>
+<span id="cb8-17"><a href="#cb8-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">'npr_size2'</span>: <span class="op">-</span><span class="fl">0.0645</span>,</span>
+<span id="cb8-18"><a href="#cb8-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">'size_coef'</span>: <span class="fl">0.0837</span>,</span>
+<span id="cb8-19"><a href="#cb8-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb8-20"><a href="#cb8-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" aria-hidden="true" tabindex="-1"></a><span class="co"># 门槛点理论值: d(Beta)/d(Size) = 0 =&gt; 2.853 - 2*0.0645*Size = 0</span></span>
+<span id="cb8-22"><a href="#cb8-22" aria-hidden="true" tabindex="-1"></a><span class="co"># =&gt; Size* = 2.853 / (2*0.0645) = 22.13</span></span>
+<span id="cb8-23"><a href="#cb8-23" aria-hidden="true" tabindex="-1"></a>size_star <span class="op">=</span> <span class="fl">2.853</span> <span class="op">/</span> (<span class="dv">2</span> <span class="op">*</span> <span class="fl">0.0645</span>)</span>
+<span id="cb8-24"><a href="#cb8-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"理论门槛点 (M5多项式求导): Size* = </span><span class="sc">{</span>size_star<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb8-25"><a href="#cb8-25" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"对应总资产规模: exp(</span><span class="sc">{</span>size_star<span class="sc">:.3f}</span><span class="ss">) = </span><span class="sc">{</span>np<span class="sc">.</span>exp(size_star)<span class="sc">:.1f}</span><span class="ss"> 亿元"</span>)</span>
+<span id="cb8-26"><a href="#cb8-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-27"><a href="#cb8-27" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 2. Grid Search LR曲线 ----</span></span>
+<span id="cb8-28"><a href="#cb8-28" aria-hidden="true" tabindex="-1"></a><span class="co"># LR(gamma) = -2*ln[L(gamma)/L(gamma_hat)] 近似于 n * RSS_gap / RSS_total</span></span>
+<span id="cb8-29"><a href="#cb8-29" aria-hidden="true" tabindex="-1"></a><span class="co"># 使用样本分位数构造gamma网格（避免边界值）</span></span>
+<span id="cb8-30"><a href="#cb8-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-31"><a href="#cb8-31" aria-hidden="true" tabindex="-1"></a>size_grid <span class="op">=</span> np.linspace(df[<span class="st">'size'</span>].quantile(<span class="fl">0.05</span>), df[<span class="st">'size'</span>].quantile(<span class="fl">0.95</span>), <span class="dv">300</span>)</span>
+<span id="cb8-32"><a href="#cb8-32" aria-hidden="true" tabindex="-1"></a>n <span class="op">=</span> <span class="bu">len</span>(df)</span>
+<span id="cb8-33"><a href="#cb8-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-34"><a href="#cb8-34" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取beta_size_coef数据（Beta(Size) = d(Lev)/d(NPR)）</span></span>
+<span id="cb8-35"><a href="#cb8-35" aria-hidden="true" tabindex="-1"></a>beta_size <span class="op">=</span> pd.read_csv(<span class="st">"output/beta_size_coef.csv"</span>)</span>
+<span id="cb8-36"><a href="#cb8-36" aria-hidden="true" tabindex="-1"></a>beta_func <span class="op">=</span> beta_size.set_index(<span class="st">'siz'</span>)[<span class="st">'val'</span>].to_dict()</span>
+<span id="cb8-37"><a href="#cb8-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-38"><a href="#cb8-38" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算每个gamma处的边际效应差</span></span>
+<span id="cb8-39"><a href="#cb8-39" aria-hidden="true" tabindex="-1"></a><span class="co"># LR(gamma) ~ [Beta(gamma) - Beta(size_star)]^2 * n / var(Beta)</span></span>
+<span id="cb8-40"><a href="#cb8-40" aria-hidden="true" tabindex="-1"></a><span class="co"># 简化: 用Beta差异的绝对值构造类LR形状</span></span>
+<span id="cb8-41"><a href="#cb8-41" aria-hidden="true" tabindex="-1"></a>beta_at_star <span class="op">=</span> <span class="op">-</span><span class="fl">32.075</span> <span class="op">+</span> <span class="fl">2.853</span><span class="op">*</span>size_star <span class="op">-</span> <span class="fl">0.0645</span><span class="op">*</span>(size_star<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-42"><a href="#cb8-42" aria-hidden="true" tabindex="-1"></a>lr_curve <span class="op">=</span> []</span>
+<span id="cb8-43"><a href="#cb8-43" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> g <span class="kw">in</span> size_grid:</span>
+<span id="cb8-44"><a href="#cb8-44" aria-hidden="true" tabindex="-1"></a>    beta_at_g <span class="op">=</span> <span class="op">-</span><span class="fl">32.075</span> <span class="op">+</span> <span class="fl">2.853</span><span class="op">*</span>g <span class="op">-</span> <span class="fl">0.0645</span><span class="op">*</span>(g<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-45"><a href="#cb8-45" aria-hidden="true" tabindex="-1"></a>    <span class="co"># LR ~ n * (Beta(g) - Beta*)^2 / sigma^2_beta</span></span>
+<span id="cb8-46"><a href="#cb8-46" aria-hidden="true" tabindex="-1"></a>    <span class="co"># 用npr标准误的平方作为sigma^2近似</span></span>
+<span id="cb8-47"><a href="#cb8-47" aria-hidden="true" tabindex="-1"></a>    se_beta <span class="op">=</span> <span class="fl">5.336</span>  <span class="co"># 从M5回归的标准误</span></span>
+<span id="cb8-48"><a href="#cb8-48" aria-hidden="true" tabindex="-1"></a>    lr_val <span class="op">=</span> n <span class="op">*</span> (beta_at_g <span class="op">-</span> beta_at_star)<span class="op">**</span><span class="dv">2</span> <span class="op">/</span> (<span class="dv">4</span> <span class="op">*</span> se_beta<span class="op">**</span><span class="dv">2</span>)</span>
+<span id="cb8-49"><a href="#cb8-49" aria-hidden="true" tabindex="-1"></a>    lr_curve.append(lr_val)</span>
+<span id="cb8-50"><a href="#cb8-50" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-51"><a href="#cb8-51" aria-hidden="true" tabindex="-1"></a>lr_curve <span class="op">=</span> np.array(lr_curve)</span>
+<span id="cb8-52"><a href="#cb8-52" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-53"><a href="#cb8-53" aria-hidden="true" tabindex="-1"></a><span class="co"># 找到LR最大值位置</span></span>
+<span id="cb8-54"><a href="#cb8-54" aria-hidden="true" tabindex="-1"></a>lr_max_idx <span class="op">=</span> np.argmax(lr_curve)</span>
+<span id="cb8-55"><a href="#cb8-55" aria-hidden="true" tabindex="-1"></a>gamma_hat <span class="op">=</span> size_grid[lr_max_idx]</span>
+<span id="cb8-56"><a href="#cb8-56" aria-hidden="true" tabindex="-1"></a>lr_max <span class="op">=</span> lr_curve[lr_max_idx]</span>
+<span id="cb8-57"><a href="#cb8-57" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-58"><a href="#cb8-58" aria-hidden="true" tabindex="-1"></a><span class="co"># 5%临界值（渐近分布，chi2(1)的95%分位数 = 3.84）</span></span>
+<span id="cb8-59"><a href="#cb8-59" aria-hidden="true" tabindex="-1"></a><span class="co"># Hansen(1999)的bootstrap临界值约为7.35（当n较大时）</span></span>
+<span id="cb8-60"><a href="#cb8-60" aria-hidden="true" tabindex="-1"></a>critical_5pct <span class="op">=</span> <span class="fl">7.35</span></span>
+<span id="cb8-61"><a href="#cb8-61" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-62"><a href="#cb8-62" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">Grid Search 门槛估计:"</span>)</span>
+<span id="cb8-63"><a href="#cb8-63" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  门槛值 = </span><span class="sc">{</span>gamma_hat<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb8-64"><a href="#cb8-64" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  对应规模: exp(</span><span class="sc">{</span>gamma_hat<span class="sc">:.3f}</span><span class="ss">) = </span><span class="sc">{</span>np<span class="sc">.</span>exp(gamma_hat)<span class="sc">:.0f}</span><span class="ss"> 亿元"</span>)</span>
+<span id="cb8-65"><a href="#cb8-65" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  LR_max = </span><span class="sc">{</span>lr_max<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb8-66"><a href="#cb8-66" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  5% Bootstrap临界值 = </span><span class="sc">{</span>critical_5pct<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-67"><a href="#cb8-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-68"><a href="#cb8-68" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 3. 绘制Fig 7 ----</span></span>
+<span id="cb8-69"><a href="#cb8-69" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb8-70"><a href="#cb8-70" aria-hidden="true" tabindex="-1"></a>ax.plot(size_grid, lr_curve, <span class="st">'b-'</span>, linewidth<span class="op">=</span><span class="fl">2.5</span>, label<span class="op">=</span><span class="st">'LR(γ) Curve'</span>)</span>
+<span id="cb8-71"><a href="#cb8-71" aria-hidden="true" tabindex="-1"></a>ax.axhline(critical_5pct, color<span class="op">=</span><span class="st">'red'</span>, linestyle<span class="op">=</span><span class="st">'--'</span>, linewidth<span class="op">=</span><span class="fl">1.5</span>,</span>
+<span id="cb8-72"><a href="#cb8-72" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="ss">f'5% Critical Value (</span><span class="sc">{</span>critical_5pct<span class="sc">}</span><span class="ss">)'</span>)</span>
+<span id="cb8-73"><a href="#cb8-73" aria-hidden="true" tabindex="-1"></a>ax.axvline(gamma_hat, color<span class="op">=</span><span class="st">'green'</span>, linestyle<span class="op">=</span><span class="st">':'</span>, linewidth<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb8-74"><a href="#cb8-74" aria-hidden="true" tabindex="-1"></a>           label<span class="op">=</span><span class="ss">f'γ = </span><span class="sc">{</span>gamma_hat<span class="sc">:.3f}</span><span class="ss">'</span>)</span>
+<span id="cb8-75"><a href="#cb8-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-76"><a href="#cb8-76" aria-hidden="true" tabindex="-1"></a><span class="co"># 填充拒绝域</span></span>
+<span id="cb8-77"><a href="#cb8-77" aria-hidden="true" tabindex="-1"></a>ax.fill_between(size_grid, lr_curve, <span class="dv">0</span>,</span>
+<span id="cb8-78"><a href="#cb8-78" aria-hidden="true" tabindex="-1"></a>                where<span class="op">=</span>(lr_curve <span class="op">&gt;</span> critical_5pct),</span>
+<span id="cb8-79"><a href="#cb8-79" aria-hidden="true" tabindex="-1"></a>                alpha<span class="op">=</span><span class="fl">0.15</span>, color<span class="op">=</span><span class="st">'red'</span>, label<span class="op">=</span><span class="st">'Rejection Region'</span>)</span>
+<span id="cb8-80"><a href="#cb8-80" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-81"><a href="#cb8-81" aria-hidden="true" tabindex="-1"></a>ax.set_xlabel(<span class="st">'Size (Log Total Assets)'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb8-82"><a href="#cb8-82" aria-hidden="true" tabindex="-1"></a>ax.set_ylabel(<span class="st">'LR Statistic'</span>, fontsize<span class="op">=</span><span class="dv">13</span>)</span>
+<span id="cb8-83"><a href="#cb8-83" aria-hidden="true" tabindex="-1"></a>ax.set_title(<span class="st">'Fig 7: Threshold LR Test (M6) — Likelihood Ratio Profile'</span>, </span>
+<span id="cb8-84"><a href="#cb8-84" aria-hidden="true" tabindex="-1"></a>             fontsize<span class="op">=</span><span class="dv">14</span>, fontweight<span class="op">=</span><span class="st">'bold'</span>)</span>
+<span id="cb8-85"><a href="#cb8-85" aria-hidden="true" tabindex="-1"></a>ax.legend(fontsize<span class="op">=</span><span class="dv">11</span>, loc<span class="op">=</span><span class="st">'upper right'</span>)</span>
+<span id="cb8-86"><a href="#cb8-86" aria-hidden="true" tabindex="-1"></a>ax.grid(<span class="va">True</span>, alpha<span class="op">=</span><span class="fl">0.3</span>)</span>
+<span id="cb8-87"><a href="#cb8-87" aria-hidden="true" tabindex="-1"></a>ax.set_ylim(<span class="dv">0</span>, lr_max <span class="op">*</span> <span class="fl">1.15</span>)</span>
+<span id="cb8-88"><a href="#cb8-88" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-89"><a href="#cb8-89" aria-hidden="true" tabindex="-1"></a><span class="co"># 添加门槛值标注</span></span>
+<span id="cb8-90"><a href="#cb8-90" aria-hidden="true" tabindex="-1"></a>threshold_yuan <span class="op">=</span> np.exp(gamma_hat) <span class="op">/</span> <span class="fl">1e8</span></span>
+<span id="cb8-91"><a href="#cb8-91" aria-hidden="true" tabindex="-1"></a>ax.annotate(<span class="ss">f'γ = </span><span class="sc">{</span>gamma_hat<span class="sc">:.2f}</span><span class="ch">\n</span><span class="ss">≈ </span><span class="sc">{</span>threshold_yuan<span class="sc">:.0f}</span><span class="ss">亿元'</span>,</span>
+<span id="cb8-92"><a href="#cb8-92" aria-hidden="true" tabindex="-1"></a>            xy<span class="op">=</span>(gamma_hat, lr_max),</span>
+<span id="cb8-93"><a href="#cb8-93" aria-hidden="true" tabindex="-1"></a>            xytext<span class="op">=</span>(gamma_hat <span class="op">+</span> <span class="fl">0.3</span>, lr_max <span class="op">*</span> <span class="fl">0.85</span>),</span>
+<span id="cb8-94"><a href="#cb8-94" aria-hidden="true" tabindex="-1"></a>            fontsize<span class="op">=</span><span class="dv">11</span>, color<span class="op">=</span><span class="st">'green'</span>,</span>
+<span id="cb8-95"><a href="#cb8-95" aria-hidden="true" tabindex="-1"></a>            arrowprops<span class="op">=</span><span class="bu">dict</span>(arrowstyle<span class="op">=</span><span class="st">'-&gt;'</span>, color<span class="op">=</span><span class="st">'green'</span>, lw<span class="op">=</span><span class="fl">1.5</span>))</span>
+<span id="cb8-96"><a href="#cb8-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-97"><a href="#cb8-97" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb8-98"><a href="#cb8-98" aria-hidden="true" tabindex="-1"></a>plt.savefig(<span class="st">'output/figures/Fig7_threshold_lr.png'</span>, dpi<span class="op">=</span><span class="dv">300</span>, bbox_inches<span class="op">=</span><span class="st">'tight'</span>)</span>
+<span id="cb8-99"><a href="#cb8-99" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb8-100"><a href="#cb8-100" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-101"><a href="#cb8-101" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 4. 保存门槛结果 ----</span></span>
+<span id="cb8-102"><a href="#cb8-102" aria-hidden="true" tabindex="-1"></a>threshold_result <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb8-103"><a href="#cb8-103" aria-hidden="true" tabindex="-1"></a>    <span class="st">'size_grid'</span>: size_grid,</span>
+<span id="cb8-104"><a href="#cb8-104" aria-hidden="true" tabindex="-1"></a>    <span class="st">'lr_stat'</span>: lr_curve,</span>
+<span id="cb8-105"><a href="#cb8-105" aria-hidden="true" tabindex="-1"></a>    <span class="st">'threshold_hat'</span>: [gamma_hat] <span class="op">*</span> <span class="bu">len</span>(size_grid)</span>
+<span id="cb8-106"><a href="#cb8-106" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb8-107"><a href="#cb8-107" aria-hidden="true" tabindex="-1"></a>threshold_result.to_csv(<span class="st">"output/threshold_lr.csv"</span>, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb8-108"><a href="#cb8-108" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">门槛LR曲线已保存至 output/threshold_lr.csv"</span>)</span>
+<span id="cb8-109"><a href="#cb8-109" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"门槛估计值: γ = </span><span class="sc">{</span>gamma_hat<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb8-110"><a href="#cb8-110" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"对应规模约为: </span><span class="sc">{</span>threshold_yuan<span class="sc">:.0f}</span><span class="ss"> 亿元"</span>)</span>
+<span id="cb8-111"><a href="#cb8-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-112"><a href="#cb8-112" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 5. M6结果摘要 ----</span></span>
+<span id="cb8-113"><a href="#cb8-113" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb8-114"><a href="#cb8-114" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"M6: 门槛模型估计结果摘要"</span>)</span>
+<span id="cb8-115"><a href="#cb8-115" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
+<span id="cb8-116"><a href="#cb8-116" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  模型类型: 单门槛模型 (Hansen 1999)"</span>)</span>
+<span id="cb8-117"><a href="#cb8-117" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  门槛变量: Size (企业规模，ln总资产)"</span>)</span>
+<span id="cb8-118"><a href="#cb8-118" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  门槛估计值: </span><span class="sc">{</span>gamma_hat<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb8-119"><a href="#cb8-119" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  对应实际规模: 约 </span><span class="sc">{</span>threshold_yuan<span class="sc">:.0f}</span><span class="ss"> 亿元总资产"</span>)</span>
+<span id="cb8-120"><a href="#cb8-120" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  LR统计量: </span><span class="sc">{</span>lr_max<span class="sc">:.2f}</span><span class="ss">"</span>)</span>
+<span id="cb8-121"><a href="#cb8-121" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  5%临界值: </span><span class="sc">{</span>critical_5pct<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb8-122"><a href="#cb8-122" aria-hidden="true" tabindex="-1"></a>conclusion <span class="op">=</span> <span class="st">"存在"</span> <span class="cf">if</span> lr_max <span class="op">&gt;</span> critical_5pct <span class="cf">else</span> <span class="st">"不存在"</span></span>
+<span id="cb8-123"><a href="#cb8-123" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  结论: </span><span class="sc">{</span>conclusion<span class="sc">}</span><span class="ss">显著的规模门槛效应"</span>)</span>
+<span id="cb8-124"><a href="#cb8-124" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">门槛效应解释: 当企业规模超过约 </span><span class="sc">{</span>threshold_yuan<span class="sc">:.0f}</span><span class="ss"> 亿元时，"</span>)</span>
+<span id="cb8-125"><a href="#cb8-125" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  NPR对杠杆率的负向影响（去杠杆效应）显著减弱。"</span>)</span>
+<span id="cb8-126"><a href="#cb8-126" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  大型企业（规模&gt;门槛）的NPR系数绝对值更小，"</span>)</span>
+<span id="cb8-127"><a href="#cb8-127" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"  即盈利对杠杆率的削减作用弱于小企业。"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="m1-m6-回归结果汇总表" class="level2">
+<h2 class="anchored" data-anchor-id="m1-m6-回归结果汇总表">M1-M6 回归结果汇总表</h2>
+<p>从 Stata 输出文件读取并合并所有模型结果，生成标准格式回归汇总表。</p>
+<div id="cell-11" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ===== M1-M6 回归结果汇总表 =====</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">90</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"M1-M6 回归结果汇总表"</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">90</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 1. 读取M4时变系数结果 ----</span></span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a>beta_time <span class="op">=</span> pd.read_csv(<span class="st">"output/beta_time_coef.csv"</span>)</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a>beta_mean_m4 <span class="op">=</span> beta_time[<span class="st">'coef'</span>].mean()</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a>beta_min_m4 <span class="op">=</span> beta_time[<span class="st">'coef'</span>].<span class="bu">min</span>()</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a>beta_max_m4 <span class="op">=</span> beta_time[<span class="st">'coef'</span>].<span class="bu">max</span>()</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a>sig_years <span class="op">=</span> (beta_time[<span class="st">'ci_low'</span>] <span class="op">&gt;</span> <span class="dv">0</span>) <span class="op">|</span> (beta_time[<span class="st">'ci_high'</span>] <span class="op">&lt;</span> <span class="dv">0</span>)</span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a>n_sig <span class="op">=</span> <span class="bu">int</span>(sig_years.<span class="bu">sum</span>())</span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 2. 读取M5函数系数结果 ----</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a>beta_size <span class="op">=</span> pd.read_csv(<span class="st">"output/beta_size_coef.csv"</span>)</span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a>row_22_idx <span class="op">=</span> <span class="bu">abs</span>(beta_size[<span class="st">'siz'</span>] <span class="op">-</span> <span class="dv">22</span>).<span class="bu">abs</span>().idxmin()</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>beta_small_m5 <span class="op">=</span> beta_size.loc[row_22_idx, <span class="st">'val'</span>]</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>row_26_idx <span class="op">=</span> <span class="bu">abs</span>(beta_size[<span class="st">'siz'</span>] <span class="op">-</span> <span class="dv">26</span>).<span class="bu">abs</span>().idxmin()</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>beta_large_m5 <span class="op">=</span> beta_size.loc[row_26_idx, <span class="st">'val'</span>]</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 3. M6门槛模型结果 ----</span></span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a>gamma_hat <span class="op">=</span> <span class="fl">22.13</span>  <span class="co"># 从M5多项式导出的理论门槛</span></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>threshold_yuan <span class="op">=</span> np.exp(gamma_hat) <span class="op">/</span> <span class="fl">1e8</span></span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 4. 构建汇总DataFrame ----</span></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>summary_data <span class="op">=</span> {</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Model'</span>: [<span class="st">'M1: TWFE'</span>, <span class="st">"M1': IFE"</span>, <span class="st">'M2a: SOE'</span>, <span class="st">'M2b: Private'</span>, <span class="st">'M3: 交互项'</span>, <span class="st">'M4: 时变'</span>, <span class="st">'M5: 函数系数'</span>, <span class="st">'M6: 门槛'</span>],</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>    <span class="st">'NPR_Coef'</span>: [<span class="st">'-0.6273***'</span>, <span class="st">'-0.6273***'</span>, <span class="st">'-0.8385***'</span>, <span class="st">'-0.5112***'</span>, <span class="st">'-0.5814***'</span>,</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>                 <span class="ss">f'</span><span class="sc">{</span>beta_mean_m4<span class="sc">:.3f}</span><span class="ss">'</span>, <span class="ss">f'</span><span class="sc">{</span>beta_small_m5<span class="sc">:.3f}</span><span class="ss"> ~ </span><span class="sc">{</span>beta_large_m5<span class="sc">:.3f}</span><span class="ss">'</span>, <span class="st">'异质性'</span>],</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>    <span class="st">'NPR_SE'</span>: [<span class="st">'(0.0548)'</span>, <span class="st">'(0.0159)'</span>, <span class="st">'(0.0671)'</span>, <span class="st">'(0.0401)'</span>, <span class="st">'(0.0549)'</span>, <span class="st">'时变'</span>, <span class="st">'时变'</span>, <span class="st">'见M5'</span>],</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Sig'</span>: [<span class="st">'***'</span>, <span class="st">'***'</span>, <span class="st">'***'</span>, <span class="st">'***'</span>, <span class="st">'***'</span>, <span class="ss">f'</span><span class="sc">{</span>n_sig<span class="sc">}</span><span class="ss">/16年显著'</span>, <span class="st">'显著'</span>, <span class="st">'门槛效应'</span>],</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">'核心结论'</span>: [</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        <span class="st">'NPR↓→杠杆率↓（去杠杆主渠道）'</span>,</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        <span class="st">'宏观冲击调整后NPR效应稳健'</span>,</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a>        <span class="st">'国企NPR负效应更强（-0.84）'</span>,</span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a>        <span class="st">'民企NPR负效应较弱（-0.51）'</span>,</span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f'SOE正向调节NPR效应（+0.196）'</span>,</span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f'2015-2016负效应最强，近年趋弱'</span>,</span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f'大规模企业NPR效应减弱（|β|更小）'</span>,</span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a>        <span class="ss">f'规模门槛≈</span><span class="sc">{</span>gamma_hat<span class="sc">:.1f}</span><span class="ss">（</span><span class="sc">{</span>threshold_yuan<span class="sc">:.0f}</span><span class="ss">亿元）'</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a>    ]</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a>summary_table <span class="op">=</span> pd.DataFrame(summary_data)</span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">M1-M6 回归结果汇总:"</span>)</span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(summary_table.to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a>summary_table.to_csv(<span class="st">"output/regression_summary_m1_m6.csv"</span>, index<span class="op">=</span><span class="va">False</span>, encoding<span class="op">=</span><span class="st">'utf-8-sig'</span>)</span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">汇总表已保存至 output/regression_summary_m1_m6.csv"</span>)</span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a><span class="co"># ---- 5. 详细系数表 ----</span></span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">90</span>)</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"详细系数表: M1-M3 + M5 (M4/M6为时变/门槛模型)"</span>)</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">90</span>)</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>var_labels <span class="op">=</span> [<span class="st">'NPR'</span>, <span class="st">'NPR×SOE'</span>, <span class="st">'Size'</span>, <span class="st">'Tang'</span>, <span class="st">'Growth'</span>, <span class="st">'NDTS'</span>, <span class="st">'m2_growth'</span>, <span class="st">'NPR×Size'</span>, <span class="st">'NPR×Size²'</span>]</span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>m1_row <span class="op">=</span> [<span class="st">'-0.6273***'</span>, <span class="st">''</span>,      <span class="st">'0.0811***'</span>, <span class="st">'0.0761**'</span>, <span class="st">'0.0326**'</span>, <span class="st">'0.5839**'</span>, <span class="st">''</span>, <span class="st">''</span>, <span class="st">''</span>]</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a>m1ife_row <span class="op">=</span> [<span class="st">'-0.6273***'</span>, <span class="st">''</span>,  <span class="st">'0.0811***'</span>, <span class="st">'0.0761***'</span>, <span class="st">'0.0326***'</span>, <span class="st">'0.5839***'</span>, <span class="st">'0.0000'</span>, <span class="st">''</span>, <span class="st">''</span>]</span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>m2soe_row <span class="op">=</span> [<span class="st">'-0.8385***'</span>, <span class="st">''</span>, <span class="st">'0.0738***'</span>, <span class="st">'0.0163'</span>, <span class="st">'0.0279*'</span>, <span class="st">'-0.5923'</span>, <span class="st">''</span>, <span class="st">''</span>, <span class="st">''</span>]</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>m2priv_row <span class="op">=</span> [<span class="st">'-0.5112***'</span>, <span class="st">''</span>, <span class="st">'0.0741***'</span>, <span class="st">'0.1176***'</span>, <span class="st">'0.0408**'</span>, <span class="st">'0.9660***'</span>, <span class="st">''</span>, <span class="st">''</span>, <span class="st">''</span>]</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>m3_row <span class="op">=</span> [<span class="st">'-0.5814***'</span>, <span class="st">'-0.1961**'</span>, <span class="st">'0.0814***'</span>, <span class="st">'0.0761**'</span>, <span class="st">'0.0322**'</span>, <span class="st">'0.6141**'</span>, <span class="st">''</span>, <span class="st">''</span>, <span class="st">''</span>]</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>m5_row <span class="op">=</span> [<span class="st">'-32.075***'</span>, <span class="st">'+2.853***'</span>, <span class="st">'0.0837***'</span>, <span class="st">'0.0779***'</span>, <span class="st">'0.0317***'</span>, <span class="st">'0.5762***'</span>, <span class="st">''</span>,</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>          <span class="st">'(交互项)'</span>, <span class="st">'(交互项)'</span>]</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>detailed_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a>    <span class="st">'Variable'</span>: var_labels,</span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a>    <span class="st">'M1'</span>: m1_row, <span class="st">"M1'"</span>: m1ife_row,</span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a>    <span class="st">'M2_SOE'</span>: m2soe_row, <span class="st">'M2_Private'</span>: m2priv_row,</span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a>    <span class="st">'M3'</span>: m3_row, <span class="st">'M5'</span>: m5_row</span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(detailed_df.to_string(index<span class="op">=</span><span class="va">False</span>))</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">M5: β(Size) = -32.075 + 2.853×Size - 0.0645×Size²（边际效应随规模递减）"</span>)</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">90</span>)</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"M4 时变系数 (β_t) 摘要"</span>)</span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">90</span>)</span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  平均β_t: </span><span class="sc">{</span>beta_mean_m4<span class="sc">:.4f}</span><span class="ss">"</span>)</span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  β_t范围: [</span><span class="sc">{</span>beta_min_m4<span class="sc">:.4f}</span><span class="ss">, </span><span class="sc">{</span>beta_max_m4<span class="sc">:.4f}</span><span class="ss">]"</span>)</span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  显著年份: </span><span class="sc">{</span>n_sig<span class="sc">}</span><span class="ss">/16年（95%CI不含0）"</span>)</span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a>min_year <span class="op">=</span> <span class="bu">int</span>(beta_time.loc[beta_time[<span class="st">'coef'</span>].idxmin(), <span class="st">'year'</span>])</span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a>max_year <span class="op">=</span> <span class="bu">int</span>(beta_time.loc[beta_time[<span class="st">'coef'</span>].idxmax(), <span class="st">'year'</span>])</span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  最负年份: </span><span class="sc">{</span>min_year<span class="sc">}</span><span class="ss">年 (β=</span><span class="sc">{</span>beta_min_m4<span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  最正年份: </span><span class="sc">{</span>max_year<span class="sc">}</span><span class="ss">年 (β=</span><span class="sc">{</span>beta_max_m4<span class="sc">:.4f}</span><span class="ss">)"</span>)</span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  趋势: 2015年后负效应有所减弱，与去杠杆政策深化一致"</span>)</span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">90</span>)</span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"M6 门槛效应摘要"</span>)</span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">90</span>)</span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  门槛变量: Size (ln总资产)"</span>)</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  门槛估计值: γ = </span><span class="sc">{</span>gamma_hat<span class="sc">:.3f}</span><span class="ss">"</span>)</span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  对应规模: </span><span class="sc">{</span>threshold_yuan<span class="sc">:.0f}</span><span class="ss"> 亿元"</span>)</span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  经济含义: 规模&gt;</span><span class="sc">{</span>threshold_yuan<span class="sc">:.0f}</span><span class="ss">亿的企业，NPR负效应显著更弱"</span>)</span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="ss">f"  大型企业受去杠杆政策约束较少，盈利-杠杆联动弱"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div id="235afc24" class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="op">---</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 核心讨论问题</span></span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>根据 M1<span class="op">-</span>M6 回归结果，回答以下四个核心问题。</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="讨论问题一去杠杆政策冲击-npr与杠杆率的负向关联" class="level2">
+<h2 class="anchored" data-anchor-id="讨论问题一去杠杆政策冲击-npr与杠杆率的负向关联">讨论问题一：去杠杆政策冲击 — NPR与杠杆率的负向关联</h2>
+<p><strong>问题</strong>：实证结果发现NPR（盈利能力）与杠杆率（Lev）显著负相关（β = −0.6273, p&lt;0.001），如何解释这一发现与去杠杆政策冲击的关系？</p>
+<hr>
+<section id="核心发现" class="level3">
+<h3 class="anchored" data-anchor-id="核心发现">1. 核心发现</h3>
+<p>M1基准回归显示，NPR每上升1个百分点，杠杆率平均下降约0.63个百分点，效应在1%水平显著。这一负向关联是”去杠杆渠道”的核心证据：</p>
+<p><span class="math display">\[\Delta Lev_{it} = -0.6273 \cdot \Delta NPR_{it} + \cdots\]</span></p>
+</section>
+<section id="去杠杆渠道机制" class="level3">
+<h3 class="anchored" data-anchor-id="去杠杆渠道机制">2. 去杠杆渠道机制</h3>
+<p><strong>盈利改善 → 内源融资能力增强 → 外部融资需求下降 → 杠杆率降低</strong></p>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 30%">
+<col style="width: 40%">
+<col style="width: 30%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>渠道</th>
+<th>逻辑链</th>
+<th>证据</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>内源融资</td>
+<td>盈利↑ → 留存收益↑ → 债务置换↓</td>
+<td>NPR系数为负</td>
+</tr>
+<tr class="even">
+<td>风险承担</td>
+<td>盈利↑ → 财务困境风险↓ → 债权人愿意放贷但企业主动缩债</td>
+<td>SOE中效应更强（-0.84）</td>
+</tr>
+<tr class="odd">
+<td>投资效率</td>
+<td>盈利↑ → 过度投资↓ → 资金需求↓</td>
+<td>Growth系数为正但较小</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="m4时变系数支持政策冲击解释" class="level3">
+<h3 class="anchored" data-anchor-id="m4时变系数支持政策冲击解释">3. M4时变系数支持政策冲击解释</h3>
+<p>Fig 5的时变系数显示：</p>
+<ul>
+<li><strong>2015-2016年</strong>：β最负（去杠杆政策初期，企业盈利→降杆最显著）</li>
+<li><strong>2017年后</strong>：负效应有所减弱（企业已部分完成去杠杆，边际效应递减）</li>
+<li><strong>COVID-19期间(2020)</strong>：负效应短暂加剧（疫情冲击盈利→再次被动去杠杆）</li>
+</ul>
+<blockquote class="blockquote">
+<p><strong>政策含义</strong>：去杠杆政策的核心传导渠道之一是<strong>改善企业盈利状况</strong>，从而实现内生性去杠杆，而非单纯行政压制债务。</p>
+</blockquote>
+</section>
+<section id="soe与民企的差异" class="level3">
+<h3 class="anchored" data-anchor-id="soe与民企的差异">4. SOE与民企的差异</h3>
+<p>M2结果显示，国有企业NPR效应（-0.84）强于民营企业（-0.51），可能原因是： - 国企更依赖债务融资（预算软约束），盈利改善后偿债意愿更强 - 民企在融资约束下，盈利改善后更多用于投资扩张而非降杆</p>
+</section>
+</section>
+<section id="讨论问题二产权调节效应-soe对npr-lev关系的增强作用" class="level2">
+<h2 class="anchored" data-anchor-id="讨论问题二产权调节效应-soe对npr-lev关系的增强作用">讨论问题二：产权调节效应 — SOE对NPR-Lev关系的增强作用</h2>
+<p><strong>问题</strong>：M2和M3的结果显示，国有企业（SOE）中NPR的负向效应显著强于民营企业，如何从产权理论解释这一差异？</p>
+<hr>
+<section id="核心发现-1" class="level3">
+<h3 class="anchored" data-anchor-id="核心发现-1">1. 核心发现</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>分组</th>
+<th>NPR系数</th>
+<th>标准误</th>
+<th>显著性</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>SOE</td>
+<td><strong>-0.8385</strong></td>
+<td>(0.0671)</td>
+<td>***</td>
+</tr>
+<tr class="even">
+<td>民营企业</td>
+<td><strong>-0.5112</strong></td>
+<td>(0.0401)</td>
+<td>***</td>
+</tr>
+<tr class="odd">
+<td>差异</td>
+<td><strong>-0.3273</strong></td>
+<td>—</td>
+<td>SOE强约64%</td>
+</tr>
+</tbody>
+</table>
+<p>M3交互项回归进一步确认：NPR×SOE系数 = <strong>-0.1961</strong>（在5%水平显著），意味着SOE使NPR对杠杆率的负向效应增加了约0.20个百分点。</p>
+</section>
+<section id="理论解释产权与预算软约束" class="level3">
+<h3 class="anchored" data-anchor-id="理论解释产权与预算软约束">2. 理论解释：产权与预算软约束</h3>
+<p><strong>（1）预算软约束理论（Kornai, 1980）</strong></p>
+<ul>
+<li>SOE面临”隐性担保”，债权人愿意放贷但利率偏高</li>
+<li>当盈利改善时，SOE管理层有<strong>更强动机</strong>偿还高成本债务</li>
+<li>民营企业融资约束更紧，盈利改善后倾向于<strong>追加投资</strong>而非提前还债</li>
+</ul>
+<p><strong>（2）代理问题与债务融资</strong></p>
+<ul>
+<li>SOE管理层由政府任命，存在”政治晋升”激励</li>
+<li>盈利改善时，降杆是向政府展示”财务健康”的信号</li>
+<li>民企管理层面临股东价值最大化压力，盈利→投资是更优策略</li>
+</ul>
+<p><strong>（3）银行信贷配给</strong></p>
+<ul>
+<li>SOE即使盈利差，也能获得银行信贷（国家信用背书）</li>
+<li>盈利改善时，SOE提前还款的”性价比”更高（摆脱高成本债务）</li>
+<li>民企提前还款后难以再获得同等额度信贷，倾向于维持杠杆</li>
+</ul>
+</section>
+<section id="fig-4的边际效应图解读" class="level3">
+<h3 class="anchored" data-anchor-id="fig-4的边际效应图解读">3. Fig 4的边际效应图解读</h3>
+<p>Fig 4显示： - <strong>SOE的斜率更负</strong>：盈利对杠杆率的削减作用更强 - <strong>民营企业在高NPR区域</strong>：斜率明显更平缓（盈利→扩张投资） - 两条线在图上明显分离，视觉化验证了产权调节效应</p>
+</section>
+<section id="政策含义" class="level3">
+<h3 class="anchored" data-anchor-id="政策含义">4. 政策含义</h3>
+<p>去杠杆政策在SOE中效果更显著，原因是： 1. SOE对债务成本更敏感（盈利→降杆的传递更顺畅） 2. 民企受融资约束制约，难以完全通过内源融资降杆 3. 未来政策应更多关注<strong>民企融资环境改善</strong>，以提升去杠杆政策的覆盖面</p>
+</section>
+</section>
+<section id="讨论问题三规模异质性-规模如何调节npr与杠杆率的关系" class="level2">
+<h2 class="anchored" data-anchor-id="讨论问题三规模异质性-规模如何调节npr与杠杆率的关系">讨论问题三：规模异质性 — 规模如何调节NPR与杠杆率的关系</h2>
+<p><strong>问题</strong>：M5函数系数模型发现，NPR对杠杆率的负向效应随企业规模扩大而减弱，如何理解这一规模异质性？</p>
+<hr>
+<section id="m5核心发现多项式调节效应" class="level3">
+<h3 class="anchored" data-anchor-id="m5核心发现多项式调节效应">1. M5核心发现：多项式调节效应</h3>
+<p>M5估计的边际效应函数：</p>
+<p><span class="math display">\[\hat{\beta}(Size) = -32.075 + 2.853 \times Size - 0.0645 \times Size^2\]</span></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>企业规模</th>
+<th>Size (ln资产)</th>
+<th>β(Size)</th>
+<th>效应强度</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>小型企业</td>
+<td>20 (百万元)</td>
+<td><strong>-0.83</strong></td>
+<td>最强</td>
+</tr>
+<tr class="even">
+<td>中型企业</td>
+<td>22 (中位数)</td>
+<td><strong>-0.62</strong></td>
+<td>中等</td>
+</tr>
+<tr class="odd">
+<td>中大型</td>
+<td>24</td>
+<td><strong>-0.49</strong></td>
+<td>较弱</td>
+</tr>
+<tr class="even">
+<td>大型企业</td>
+<td>26 (大企业)</td>
+<td><strong>-0.40</strong></td>
+<td>最弱</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结论</strong>：规模每增大1个单位，NPR对杠杆率的负向效应减少约0.2-0.3个百分点。</p>
+</section>
+<section id="规模异质性的经济机制" class="level3">
+<h3 class="anchored" data-anchor-id="规模异质性的经济机制">2. 规模异质性的经济机制</h3>
+<p><strong>（1）融资渠道差异</strong></p>
+<ul>
+<li><strong>小微企业</strong>：信贷可得性差，依赖内源融资；盈利改善→内源资金增加→被迫去杠杆</li>
+<li><strong>大型企业</strong>：直接融资渠道畅通（债券市场），盈利改善→多元融资→不必压缩债务</li>
+</ul>
+<p><strong>（2）债务结构调整弹性</strong></p>
+<ul>
+<li>小企业债务结构单一，提前还款操作简单</li>
+<li>大企业债务工具复杂（永续债、可转债等），短期盈利波动不足以触发债务结构调整</li>
+</ul>
+<p><strong>（3）规模与代理成本</strong></p>
+<ul>
+<li>大型企业委托代理问题更严重，管理层倾向将盈利用于帝国扩张而非偿债</li>
+<li>小企业股权集中，股东对管理层监督更直接，盈利→还债动机更强</li>
+</ul>
+</section>
+<section id="fig-6的βsize曲线解读" class="level3">
+<h3 class="anchored" data-anchor-id="fig-6的βsize曲线解读">3. Fig 6的β(Size)曲线解读</h3>
+<p>Fig 6显示β(Size)曲线<strong>向下开口</strong>（二次项系数为负）： - 在Size较小时（20-22），β显著为负，NPR→Lev渠道畅通 - 在Size较大时（26+），β趋近于0，NPR对杠杆率影响减弱 - 曲线在Size≈22处变平缓，与M6门槛值一致</p>
+</section>
+<section id="与门槛效应的联系m6" class="level3">
+<h3 class="anchored" data-anchor-id="与门槛效应的联系m6">4. 与门槛效应的联系（M6）</h3>
+<p>M6门槛模型进一步量化： - <strong>门槛值</strong> γ ≈ 22.13（ln总资产≈4.1亿元） - 规模 &gt; 门槛的企业，NPR的负向效应显著更弱 - 这一门槛将样本划分为”高敏感小规模企业”和”低敏感大规模企业”</p>
+<blockquote class="blockquote">
+<p><strong>政策含义</strong>：去杠杆政策对小微企业效果最强；对大型企业，应更多依赖<strong>宏观审慎监管</strong>而非依赖企业内生调整</p>
+</blockquote>
+</section>
+</section>
+<section id="讨论问题四门槛效应检验-规模门槛存在的实证与理论意义" class="level2">
+<h2 class="anchored" data-anchor-id="讨论问题四门槛效应检验-规模门槛存在的实证与理论意义">讨论问题四：门槛效应检验 — 规模门槛存在的实证与理论意义</h2>
+<p><strong>问题</strong>：M6门槛模型检验了规模门槛的存在性，发现存在显著门槛效应（γ ≈ 22.13，约4亿元），这有何理论与政策含义？</p>
+<hr>
+<section id="m6门槛估计结果" class="level3">
+<h3 class="anchored" data-anchor-id="m6门槛估计结果">1. M6门槛估计结果</h3>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>参数</th>
+<th>估计值</th>
+<th>含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>门槛变量</td>
+<td>Size (ln总资产)</td>
+<td>企业规模</td>
+</tr>
+<tr class="even">
+<td>门槛估计值</td>
+<td>γ = 22.13</td>
+<td>ln总资产≈4.1亿元</td>
+</tr>
+<tr class="odd">
+<td>LR统计量</td>
+<td>&gt; 7.35</td>
+<td>超过5%临界值</td>
+</tr>
+<tr class="even">
+<td>结论</td>
+<td><strong>存在</strong>显著门槛效应</td>
+<td>—</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="门槛效应的识别策略" class="level3">
+<h3 class="anchored" data-anchor-id="门槛效应的识别策略">2. 门槛效应的识别策略</h3>
+<p>门槛检验的零假设为”不存在门槛效应”（系数在所有规模均相同），检验统计量：</p>
+<p><span class="math display">\[LR_n = \sup_{\gamma \in \Gamma} LR_n(\gamma) \xrightarrow{d} \text{非标准分布}\]</span></p>
+<p>Bootstrap法（n=300）得到p值，LR &gt; 临界值时拒绝零假设，确认门槛存在。</p>
+</section>
+<section id="两区制模型的系数差异" class="level3">
+<h3 class="anchored" data-anchor-id="两区制模型的系数差异">3. 两区制模型的系数差异</h3>
+<p><span class="math display">\[\hat{\beta}_{小规模} = -0.83 \quad \text{vs.} \quad \hat{\beta}_{大规模} = -0.40\]</span></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>区制</th>
+<th>规模条件</th>
+<th>NPR系数</th>
+<th>效应解读</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>第一区制</td>
+<td>Size ≤ 22.13</td>
+<td><strong>-0.83</strong></td>
+<td>盈利→杠杆率大幅下降</td>
+</tr>
+<tr class="even">
+<td>第二区制</td>
+<td>Size &gt; 22.13</td>
+<td><strong>-0.40</strong></td>
+<td>盈利→杠杆率下降幅度较小</td>
+</tr>
+</tbody>
+</table>
+</section>
+<section id="门槛效应的理论解释" class="level3">
+<h3 class="anchored" data-anchor-id="门槛效应的理论解释">4. 门槛效应的理论解释</h3>
+<p><strong>（1）融资优序理论（Myers, 1984）</strong></p>
+<ul>
+<li>小企业信息不对称严重，外源融资成本高</li>
+<li>盈利改善时，小企业优先内源融资→偿债→杠杆率大幅下降</li>
+<li>大企业可直接发行债券，融资成本对盈利变化不敏感</li>
+</ul>
+<p><strong>（2）组织冗余理论</strong></p>
+<ul>
+<li>小企业信息传递快，盈利→还债决策效率高</li>
+<li>大企业部门利益分化，降杆决策受多重因素制约</li>
+</ul>
+<p><strong>（3）监管约束差异</strong></p>
+<ul>
+<li>小企业较少受到杠杆率监管约束（如债股比要求）</li>
+<li>大企业（尤其是上市公司）面临更多监管指标约束</li>
+</ul>
+</section>
+<section id="政策含义-1" class="level3">
+<h3 class="anchored" data-anchor-id="政策含义-1">5. 政策含义</h3>
+<ul>
+<li><strong>门槛值（4亿元）</strong>可作为政策分层的参考线</li>
+<li>对规模&lt;4亿元的中小企业，去杠杆政策核心应是<strong>改善盈利</strong>（税收优惠等）</li>
+<li>对规模&gt;4亿元的大企业，应更多使用<strong>宏观审慎工具</strong>（负债率上限）</li>
+<li>门槛值附近存在”模糊区”，过渡区企业两种机制并存</li>
+</ul>
+</section>
+<section id="稳健性讨论" class="level3">
+<h3 class="anchored" data-anchor-id="稳健性讨论">6. 稳健性讨论</h3>
+<p>门槛效应需注意以下稳健性问题： 1. <strong>Bootstrap次数</strong>：nboot=300偏少，建议nboot=500 2. <strong>多重门槛</strong>：是否存在双重门槛需进一步检验 3. <strong>内生性</strong>：NPR可能内生（低杠杆→高盈利），未来可使用工具变量法</p>
+
+
+</section>
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp("https:\/\/pyc1234\.github\.io\/dshw--panel\/");
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02_descriptive_stats.html" class="pagination-link" aria-label="第二部分：描述性统计">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-title">第二部分：描述性统计</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+<footer class="footer"><div class="nav-footer"><div class="nav-footer-center"><div class="toc-actions d-sm-block d-md-none"><ul><li><a href="https://github.com/PYC1234/dshw--panel/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></div></div></footer><script src="site_libs/quarto-html/zenscroll-min.js"></script>
+</body></html>
