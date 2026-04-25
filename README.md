@@ -31,7 +31,7 @@
 ### GitHub 仓库
 https://github.com/PYC1234/dshw--panel
 
-### Quarto Book（如完成）
+### Quarto Book
 https://PYC1234.github.io/dshw--panel/
 
 ### 主要发现
