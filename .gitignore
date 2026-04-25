@@ -1,0 +1,49 @@
+# 原始数据不上传（包含敏感信息）
+data/raw/
+
+# 保留清洗后的数据（上传用于复现）
+# data/clean/*.csv
+# data/clean/*.dta
+
+# 日志文件
+*.log
+
+# Jupyter检查点
+.ipynb_checkpoints/
+
+# macOS系统文件
+.DS_Store
+
+# Python缓存
+__pycache__/
+*.pyc
+*.pyo
+
+# Stata临时文件
+*.smcl
+*.temp*
+
+# 输出文件（可选，保留分析结果）
+# output/*.csv
+# output/figures/*.png
+
+# 环境文件（可选）
+# env_dsfin_py311.yml
+
+# Windows临时文件
+~$*
+*.tmp
+
+# 压缩包（如果不想上传）
+*.zip
+*.rar
+*.7z
+
+# Quarto临时文件
+_quarto/
+*.tex
+*.bbl
+*.blg
+
+# Node_modules（如果有）
+# node_modules/
