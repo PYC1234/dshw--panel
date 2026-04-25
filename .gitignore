@@ -48,5 +48,6 @@ _quarto/
 # Node_modules（如果有）
 # node_modules/
 
+_book/
 /.quarto/
 **/*.quarto_ipynb
