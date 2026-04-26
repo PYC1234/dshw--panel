@@ -19,24 +19,24 @@ book:
 
   chapters:
     - index.qmd
-    - part: "Introduction & Hypotheses"
+    - part: "Chapter 1: Introduction & Hypotheses"
       numbered: false
       chapters:
         - ch1_introduction.qmd
-    - part: "Data & Variables"
+    - part: "Chapter 2: Data & Variables"
       numbered: false
       chapters:
         - 01_data_processing.ipynb
-    - part: "Empirical Results"
+    - part: "Chapter 3: Empirical Results"
       numbered: false
       chapters:
         - 02_descriptive_stats.ipynb
         - 03_results_and_figures.ipynb
-    - part: "Robustness Checks"
+    - part: "Chapter 4: Robustness Checks"
       numbered: false
       chapters:
         - ch4_robustness.qmd
-    - part: "Conclusion"
+    - part: "Chapter 5: Conclusion"
       numbered: false
       chapters:
         - ch5_conclusion.qmd
