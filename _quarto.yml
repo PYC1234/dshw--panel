@@ -19,31 +19,36 @@ book:
 
   chapters:
     - index.qmd
-    - part: "Chapter 1: Introduction & Hypotheses"
+    - part: "Introduction & Hypotheses"
+      numbered: false
       chapters:
         - ch1_introduction.qmd
-    - part: "Chapter 2: Data & Variables"
+    - part: "Data & Variables"
+      numbered: false
       chapters:
         - 01_data_processing.ipynb
-    - part: "Chapter 3: Empirical Results"
+    - part: "Empirical Results"
+      numbered: false
       chapters:
         - 02_descriptive_stats.ipynb
         - 03_results_and_figures.ipynb
-    - part: "Chapter 4: Robustness Checks"
+    - part: "Robustness Checks"
+      numbered: false
       chapters:
         - ch4_robustness.qmd
-    - part: "Chapter 5: Conclusion"
+    - part: "Conclusion"
+      numbered: false
       chapters:
         - ch5_conclusion.qmd
 
 format:
   html:
     theme: cosmo
-    toc: true
-    number-sections: false
-    anchor-sections: true
-    smooth-scroll: true
-    code-copy: true
+    toc: true  # 用于生成目录
+    number-sections: false  # 章节编号 
+    anchor-sections: true # 章节标题添加锚点
+    smooth-scroll: true   # 启用平滑滚动
+    code-copy: true # 启用代码复制按钮
 
 execute:
   enabled: false
