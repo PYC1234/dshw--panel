@@ -7,8 +7,8 @@ clear all
 set more off
 cap log close
 
-* 设置工作目录
-cd "C:\Users\29248\Desktop\dsfin\PYC-ex_P03\data\clean"
+* 设置工作目录（使用相对路径，确保跨机器可移植）
+cd "../../data/clean"
 
 * 打开日志
 log using "../../output/regression_m4.log", replace
