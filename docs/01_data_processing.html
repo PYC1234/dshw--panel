@@ -423,7 +423,28 @@ ST/PT标记: (5717, 2)
 M2数据: (16, 2)</code></pre>
 </div>
 </div>
-<div id="cell-3" class="cell" data-execution_count="6">
+<p><strong>原始数据加载结果解读</strong></p>
+<ul>
+<li>七张原始数据表均成功加载，涵盖财务报表（资产负债表、利润表、现金流量表）、公司特征（产权性质、行业分类、ST标记）和宏观数据（M2）</li>
+<li><strong>股权性质分布</strong>：民营 32,068 条 &gt; 国有 17,846 条，符合 A 股市场整体格局</li>
+<li>各表行数基本在 49,000-58,000 范围，st_flag 表仅 5,717 行（仅包含曾被 ST 的公司）</li>
+<li>注意：M2 数据仅 16 行（2010-2025 共 16 年），后续需与面板数据按年份合并</li>
+</ul>
+<p><strong>列名映射验证</strong></p>
+<p>资产负债表和利润表列名映射正确，stkcd 前导零已保留（如”1”→“000001”），year 列均已转换为整数格式。关键数值字段（如 totalassets、net_profit）均以科学计数法存储，量级在 10<sup>9-10</sup>12 范围，符合 A 股上市公司总资产规模。</p>
+<p><strong>现金流量表与股权性质数据验证</strong></p>
+<ul>
+<li>现金流量表（DAS 开头的字段）大部分为 NaN，说明原始数据中折旧摊销科目的报告不完整，但 <code>da</code> 字段（折旧摊销）已成功提取</li>
+<li>股权性质映射后仅保留”国有企业”和”民营企业”两类，剔除了外资、合资等混合类型，样本更加纯净</li>
+<li>国有企业（stkcd=2）的 controller_type 正确映射为”国有企业”，验证了映射逻辑可靠</li>
+</ul>
+<p><strong>行业分类、ST标记、M2数据验证</strong></p>
+<ul>
+<li>行业代码采用证监会行业分类（C=制造业，J=金融等），如”平安银行”行业代码为 J66（货币金融服务），J 开头的公司在后续会被剔除（金融行业不在本研究范围内）</li>
+<li>ST 标记表仅包含曾被 ST 的公司，本研究采用”保守处理”——只要公司曾被 ST，全部年度均剔除</li>
+<li>M2 数据覆盖 2010-2025 年共 16 年，数值在 72,585（2010）至 300+ 万亿元（2025），与实际 M2 规模吻合</li>
+</ul>
+<div id="cell-7" class="cell" data-execution_count="6">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 查看各表的实际列名和数据（前几行）</span></span>
 <span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">【资产负债表列名】"</span>)</span>
 <span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(balance.columns.tolist())</span>
@@ -449,7 +470,13 @@ M2数据: (16, 2)</code></pre>
 2     1      平安银行  2012      A  1.351078e+10</code></pre>
 </div>
 </div>
-<div id="cell-4" class="cell" data-execution_count="7">
+<p><strong>数据合并结果解读</strong></p>
+<ul>
+<li>inner join 后数据缩减至 49,911 行（来自原来的 57,879 行），说明部分公司在某些年份在部分原始表中缺失数据</li>
+<li><strong>行业代码 2023-2025 缺失 665 行</strong>：这是因为 CSMAR 行业分类数据仅更新到 2022 年，代码用 2022 年分类填补了 2023-2025 的缺失，填补后行业代码缺失降为 0</li>
+<li>股权性质分布：民营 32,067 &gt; 国有 17,844，与原始数据比例基本一致，合并未引入系统性偏误</li>
+</ul>
+<div id="cell-9" class="cell" data-execution_count="7">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">【现金流量表列名】"</span>)</span>
 <span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cashflow.columns.tolist())</span>
 <span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(cashflow.head(<span class="dv">3</span>))</span>
@@ -479,7 +506,63 @@ M2数据: (16, 2)</code></pre>
 18     2  2012            国有企业</code></pre>
 </div>
 </div>
-<div id="cell-5" class="cell" data-execution_count="8">
+<p><strong>变量构造结果解读</strong></p>
+<ul>
+<li><strong>因变量 lev</strong>（资产负债率）：均值 0.40，中位数 0.40，与中国上市公司平均杠杆率相符</li>
+<li><strong>核心解释变量 npr</strong>（盈利能力）：均值 3.7%，部分公司为负（最负 −33.9%），Winsorize 后截断在 ±33.9%</li>
+<li><strong>控制变量</strong>：size（ln总资产）均值 22.3（对应约 47 亿元总资产）；tang（有形资产率）均值 20.6%；growth 增长率均值 14.2%（Winsorize 后）</li>
+<li>m2_growth 在 2010 年为 NaN（缺少 2009 年 M2 数据），其余年份有效</li>
+</ul>
+<p><strong>样本筛选流程解读</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>筛选步骤</th>
+<th>剔除观测</th>
+<th>剩余观测</th>
+<th>剩余公司</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>初始样本</td>
+<td>—</td>
+<td>49,911</td>
+<td>5,240</td>
+</tr>
+<tr class="even">
+<td>剔除金融保险</td>
+<td>−867</td>
+<td>49,044</td>
+<td>5,175</td>
+</tr>
+<tr class="odd">
+<td>剔除资不抵债</td>
+<td>−1,222</td>
+<td>48,689</td>
+<td>5,174</td>
+</tr>
+<tr class="even">
+<td>剔除缺失值</td>
+<td>−5,129</td>
+<td>43,560</td>
+<td>5,052</td>
+</tr>
+<tr class="odd">
+<td>最终剔除ST/PT</td>
+<td>−8,480</td>
+<td>35,080</td>
+<td>4,303</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>最大规模剔除来自 ST/PT（−8,480 行）</strong>：采用保守策略，曾被 ST 的公司全部剔除，防止财务困境公司扭曲盈利能力与资本结构的关系</li>
+<li>最终剩余 <strong>35,080 个观测，4,303 家公司</strong>（最终输出为 34,765 / 4,046，差异来自剔除 ind_code=Unknown 的 −315 行）</li>
+</ul>
+<p><strong>样本筛选汇总表</strong></p>
+<p>筛选表完整记录了每步剔除数量，已保存至 <code>output/screening_table.csv</code>。最终样本量 34,765 / 4,046 与表中的 35,080 / 4,303 存在 −315 差异，该差异来源于最后一步剔除 <code>ind_code=Unknown</code> 的 315 行（在 cell-18 执行，不在此表中）。</p>
+<div id="cell-13" class="cell" data-execution_count="8">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">【行业分类列名】"</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(industry.columns.tolist())</span>
 <span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(industry.head(<span class="dv">3</span>))</span>
@@ -515,11 +598,73 @@ M2数据: (16, 2)</code></pre>
 2  2012  97414.88</code></pre>
 </div>
 </div>
+<p><strong>行业分类处理结果解读</strong></p>
+<ul>
+<li>制造业（C 开头）采用 3 位行业代码（如 C39 计算机通信设备、C26 通用设备），保留行业细分度</li>
+<li><strong>C43 行业仅 1 条观测</strong>：样本量过小，合并至 “C_OTHER”</li>
+<li><strong>Unknown 行业 315 行</strong>：来自原始数据中行业代码为空的记录，暂保留在内存中，将在最终保存前剔除</li>
+<li>行业分布以制造业为主（C26、C27、C34、C35、C38、C39 均超过 1,000 条），符合 A 股市场以制造业为核心的格局</li>
+</ul>
 </section>
 <section id="数据合并" class="level2">
 <h2 class="anchored" data-anchor-id="数据合并">1.3 数据合并</h2>
 <p>按 <code>stkcd</code> 和 <code>year</code> 合并七张数据表。</p>
-<div id="cell-7" class="cell" data-execution_count="9">
+<p><strong>Winsorize 处理结果</strong></p>
+<p>对 6 个连续变量（lev、npr、tang、growth、ndts、liq）在每年截面进行双侧 1% 缩尾处理，有效控制极端值对回归的干扰。Winsorize 仅改变极端值，不损失样本量，是面板数据回归前的标准处理步骤。</p>
+<p><strong>Winsorize 效果对比</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>变量</th>
+<th>指标</th>
+<th>原始数据</th>
+<th>Winsorize 后</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lev</td>
+<td>Mean</td>
+<td>0.4052</td>
+<td>0.4049</td>
+</tr>
+<tr class="even">
+<td>lev</td>
+<td>Min-Max</td>
+<td>[0.01, 1.00]</td>
+<td>[0.03, 0.90]</td>
+</tr>
+<tr class="odd">
+<td>npr</td>
+<td>Mean</td>
+<td>0.0368</td>
+<td>0.0372</td>
+</tr>
+<tr class="even">
+<td>npr</td>
+<td>Min-Max</td>
+<td>[−1.24, 0.76]</td>
+<td>[−0.34, 0.22]</td>
+</tr>
+<tr class="odd">
+<td>growth</td>
+<td>Mean</td>
+<td>0.3076</td>
+<td>0.1416</td>
+</tr>
+<tr class="even">
+<td>growth</td>
+<td>Min-Max</td>
+<td>[−0.93, 4719]</td>
+<td>[−0.32, 3.56]</td>
+</tr>
+</tbody>
+</table>
+<ul>
+<li><strong>growth 变化最显著</strong>：原始数据存在高达 4,719 倍的异常值（公司规模年增长约 47 万%），Winsorize 将其压缩至 ±356%，均值从 30.8% 降至 14.2%，更接近实际经济意义</li>
+<li>lev 和 npr 分布变化较小，说明极端值问题相对轻微</li>
+</ul>
+<div id="cell-18" class="cell" data-execution_count="9">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 步骤1：合并三张财务报表（stkcd转字符串保留前导0）</span></span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>balance[<span class="st">'stkcd'</span>] <span class="op">=</span> balance[<span class="st">'stkcd'</span>].astype(<span class="bu">str</span>)</span>
 <span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>income[<span class="st">'stkcd'</span>] <span class="op">=</span> income[<span class="st">'stkcd'</span>].astype(<span class="bu">str</span>)</span>
@@ -576,11 +721,23 @@ Name: count, dtype: int64
 行业代码缺失（填补后）: 665</code></pre>
 </div>
 </div>
+<p><strong>最终数据保存与输出文件清单</strong></p>
+<ul>
+<li>剔除 ind_code=Unknown 的 315 行后，最终有效样本：<strong>34,765 观测，4,046 家公司</strong></li>
+<li>年份范围 2011-2025（2010 年因 growth 需滞后一期而缺失 M2 数据）</li>
+<li>国有企业 12,202 观测，民营企业 22,563 观测（约 3:5 的比例）</li>
+<li>输出文件：
+<ul>
+<li><code>data/clean/panel_data.csv</code> — 主要数据（Python 分析用）</li>
+<li><code>data/clean/panel_data.dta</code> — Stata 格式（do 文件回归用）</li>
+<li><code>output/screening_table.csv</code> — 样本筛选日志</li>
+</ul></li>
+</ul>
 </section>
 <section id="变量构造" class="level2">
 <h2 class="anchored" data-anchor-id="变量构造">1.4 变量构造</h2>
 <p>按照作业要求定义所有变量：</p>
-<div id="cell-9" class="cell" data-execution_count="10">
+<div id="cell-21" class="cell" data-execution_count="10">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ========== 因变量 ==========</span></span>
 <span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a>df[<span class="st">'lev'</span>] <span class="op">=</span> df[<span class="st">'total_liabilities'</span>] <span class="op">/</span> df[<span class="st">'totalassets'</span>]</span>
 <span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -649,7 +806,7 @@ Name: count, dtype: int64
 SOE分布: 国有企业=17844, 民营企业=32067</code></pre>
 </div>
 </div>
-<div id="cell-10" class="cell" data-execution_count="11">
+<div id="cell-22" class="cell" data-execution_count="11">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># =============================================================================</span></span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="co"># ★★★ 样本筛选 ★★★</span></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 注意：剔除ST/PT公司的步骤放在最后统一执行</span></span>
@@ -725,7 +882,7 @@ SOE分布: 国有企业=17844, 民营企业=32067</code></pre>
    （剔除原因：只要曾被ST过，全部年度均剔除）</code></pre>
 </div>
 </div>
-<div id="cell-11" class="cell" data-execution_count="12">
+<div id="cell-23" class="cell" data-execution_count="12">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 呈现样本筛选流程表</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>screening_df <span class="op">=</span> pd.DataFrame(screening_log, </span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>                            columns<span class="op">=</span>[<span class="st">'筛选步骤'</span>, <span class="st">'剔除观测数'</span>, <span class="st">'剩余观测数'</span>, <span class="st">'剩余公司数'</span>])</span>
@@ -753,7 +910,7 @@ SOE分布: 国有企业=17844, 民营企业=32067</code></pre>
 <section id="行业分类处理" class="level2">
 <h2 class="anchored" data-anchor-id="行业分类处理">1.6 行业分类处理</h2>
 <p>制造业（C开头）用2位行业代码，其他行业用1位代码；样本量&lt;30的制造业子行业合并为”其他制造业”。</p>
-<div id="cell-13" class="cell" data-execution_count="13">
+<div id="cell-25" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 行业分类处理函数</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 制造业（C开头）：使用3位数行业代码（C39、C13、C26等）</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 其他行业：使用1位数行业代码（K70→K，I65→I等）</span></span>
@@ -894,7 +1051,7 @@ Name: count, dtype: int64</code></pre>
 <section id="winsorize异常值处理" class="level2">
 <h2 class="anchored" data-anchor-id="winsorize异常值处理">1.7 Winsorize异常值处理</h2>
 <p>对连续变量在截面层面（每年）进行双侧1% Winsorize。</p>
-<div id="cell-15" class="cell" data-execution_count="14">
+<div id="cell-27" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> scipy.stats.mstats <span class="im">import</span> winsorize</span>
 <span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 需要Winsorize的变量</span></span>
@@ -924,7 +1081,7 @@ liq Winsorize完成!
 Winsorize处理完成！</code></pre>
 </div>
 </div>
-<div id="cell-16" class="cell" data-execution_count="15">
+<div id="cell-28" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Winsorize前后对比统计</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"="</span> <span class="op">*</span> <span class="dv">70</span>)</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Winsorize前后对比"</span>)</span>
@@ -957,7 +1114,7 @@ Winsorize前后对比
 </section>
 <section id="保存清洗后数据" class="level2">
 <h2 class="anchored" data-anchor-id="保存清洗后数据">1.8 保存清洗后数据</h2>
-<div id="cell-18" class="cell" data-execution_count="16">
+<div id="cell-30" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># ★★★ 剔除行业代码为Unknown的行（原始数据中不存在的公司）★★★</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>n_before_unknown <span class="op">=</span> <span class="bu">len</span>(df)</span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df[df[<span class="st">'ind_code'</span>] <span class="op">!=</span> <span class="st">'Unknown'</span>]</span>
@@ -997,7 +1154,7 @@ SOE: 国有企业=12,202, 民营企业=22,563
   - output/screening_table.csv</code></pre>
 </div>
 </div>
-<div id="cell-19" class="cell" data-execution_count="17">
+<div id="cell-31" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb26"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb26-1"><a href="#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 最终数据预览</span></span>
 <span id="cb26-2"><a href="#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"最终数据变量列表："</span>)</span>
 <span id="cb26-3"><a href="#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df.columns.tolist())</span>

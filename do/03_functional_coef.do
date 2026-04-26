@@ -9,7 +9,7 @@ set more off
 cap log close
 
 * 设置工作目录（使用相对路径，确保跨机器可移植）
-cd "../../data/clean"
+cd "data/clean"
 
 * 打开日志
 log using "..\..\output\regression_m5_m6.log", replace
@@ -122,7 +122,8 @@ di "面板设定完成"
 di "单门槛检验..."
 xthreg lev npr size tang growth ndts, ///
     rx(npr) ///
-    thv(size) ///
+    qx(size) ///
+    thnum(1) ///
     trim(0.05) ///
     nboot(300) ///
     id(stkcd) ///

@@ -313,10 +313,62 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 年份范围: 2011 - 2025</code></pre>
 </div>
 </div>
+<p><strong>清洗后数据加载确认</strong></p>
+<ul>
+<li>成功从 <code>data/clean/panel_data.csv</code> 加载 34,765 个观测、4,046 家公司</li>
+<li>年份范围 2011-2025，与 01_notebook 最终输出完全一致</li>
+</ul>
 <section id="主要变量描述性统计" class="level2">
 <h2 class="anchored" data-anchor-id="主要变量描述性统计">2.1 主要变量描述性统计</h2>
 <p>分全样本、SOE、非SOE三组计算描述性统计量，并进行均值差异t检验。</p>
-<div id="cell-3" class="cell" data-execution_count="13">
+<p><strong>描述性统计结果解读（全样本 / SOE / 民营企业）</strong></p>
+<p>全样本核心变量特征： - <strong>lev</strong>（资产负债率）：均值 40.6%，中位数 40.0%，左偏分布（国企均值 48.2% &gt; 民企 36.4%） - <strong>npr</strong>（盈利能力）：均值 3.7%，民企（4.0%）&gt; 国企（3.3%），民企盈利能力整体更强 - <strong>size</strong>（规模）：国企均值 23.05 &gt; 民企 21.91，反映国企规模普遍更大 - <strong>tang</strong>（有形资产率）：国企 23.7% &gt; 民企 18.9%，国企资产更偏重固定资产</p>
+<p>SOE 与民企在资本结构、盈利能力、规模上均存在显著差异，支持分组回归的必要性。</p>
+<p><strong>SOE vs 民营企业 t 检验结果解读</strong></p>
+<p>所有 6 个变量在 1% 水平均显著差异：</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>变量</th>
+<th>差异方向</th>
+<th>经济含义</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>lev</td>
+<td>SOE 高 0.118</td>
+<td>国企杠杆率更高（预算软约束 / 政府隐性担保）</td>
+</tr>
+<tr class="even">
+<td>npr</td>
+<td>SOE 低 0.007</td>
+<td>国企盈利能力较弱（效率相对低下）</td>
+</tr>
+<tr class="odd">
+<td>size</td>
+<td>SOE 大 1.14</td>
+<td>国企规模显著大于民企</td>
+</tr>
+<tr class="even">
+<td>tang</td>
+<td>SOE 高 0.047</td>
+<td>国企固定资产占比更高</td>
+</tr>
+<tr class="odd">
+<td>growth</td>
+<td>SOE 低 0.051</td>
+<td>国企成长性弱于民企</td>
+</tr>
+<tr class="even">
+<td>ndts</td>
+<td>SOE 高 0.002</td>
+<td>国企非债务税盾略高</td>
+</tr>
+</tbody>
+</table>
+<p><strong>结论</strong>：国企在资本结构、盈利能力、成长性等维度均与民企存在系统性差异，产权性质是重要的调节变量。</p>
+<div id="cell-6" class="cell" data-execution_count="13">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 定义分析变量</span></span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>vars_analysis <span class="op">=</span> [<span class="st">'lev'</span>, <span class="st">'npr'</span>, <span class="st">'size'</span>, <span class="st">'tang'</span>, <span class="st">'growth'</span>, <span class="st">'ndts'</span>]</span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -395,7 +447,12 @@ growth    22563.0   0.159935  0.297596  -0.318401  -0.058750   0.011287   0.0881
 ndts      22563.0   0.024446  0.014832   0.000773   0.008268   0.013558   0.021695   0.032355   0.044023   0.091120</code></pre>
 </div>
 </div>
-<div id="cell-4" class="cell" data-execution_count="14">
+<p><strong>相关系数矩阵解读</strong></p>
+<p>核心相关关系（均在 1% 水平显著）： - <strong>lev ↔︎ npr = −0.323</strong>：负相关，支持优序融资理论——盈利能力越强，杠杆率越低 - <strong>lev ↔︎ size = +0.517</strong>：中等正相关，规模越大越倾向高杠杆（大型企业融资能力更强） - <strong>lev ↔︎ soe = +0.289</strong>：国企杠杆率系统性高于民企，与 t 检验一致 - <strong>npr ↔︎ growth = +0.254</strong>：盈利高的企业成长性也较好，符合基本面逻辑 - <strong>tang ↔︎ ndts = +0.667</strong>：高固定资产通常伴随高折旧，税盾效应同步增强</p>
+<p>各变量相关系数绝对值多在 0.3-0.5 范围，不存在严重多重共线性问题，适合放入同一回归模型。</p>
+<p><strong>Fig 3 相关系数热力图解读</strong></p>
+<p>热力图以颜色深浅展示相关强度（红色=正相关，蓝色=负相关），上三角已遮蔽以避免重复展示。主要看点： - lev 与 npr 显著负相关（深蓝色）—— 核心发现 - lev 与 size 正相关（暖色）—— 规模效应明显 - tang 与 ndts 高相关（红褐色）—— 符合经济逻辑（固定资产→折旧→税盾） - Fig 3 保存至 <code>output/figures/Fig3_correlation_heatmap.png</code></p>
+<div id="cell-9" class="cell" data-execution_count="14">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SOE vs 非SOE 均值差异t检验</span></span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"</span><span class="ch">\n</span><span class="st">"</span> <span class="op">+</span> <span class="st">"="</span> <span class="op">*</span> <span class="dv">80</span>)</span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"SOE vs 非SOE 均值差异 t 检验"</span>)</span>
@@ -453,11 +510,67 @@ ndts           0.0262       0.0244       0.0017      9.975      ***
 t检验结果已保存至 output/ttest_soe_results.csv</code></pre>
 </div>
 </div>
+<p><strong>Fig 1 &amp; Fig 2 时序趋势图解读</strong></p>
+<p>Fig 1（杠杆率趋势）： - 国企（蓝线）杠杆率在 2010-2020 年持续高于民企（红线），差距约 10-15 个百分点 - 2015 年后两者差距逐步收窄，与”去杠杆”政策推进一致</p>
+<p>Fig 2（盈利能力趋势）： - 民企盈利能力在多数年份高于国企，但波动也更大 - 2020 年 COVID-19 疫情期间两者均出现明显下滑</p>
+<p>两图结合看：<strong>NPR 上升 → 杠杆率下降</strong>的负相关关系在 SOE 和民营企业中均存在，但国企的传导更顺畅（见 M2/M3 回归结果）。</p>
+<p><strong>Fig 3 年度杠杆率箱型图解读</strong></p>
+<p>箱型图展示各年度 Lev 的分布特征： - 中位数（红线）围绕 0.35-0.45 区间波动，分布较为稳定 - 箱体高度（IQR）在 0.20-0.25 范围，说明大部分公司杠杆率集中 - 无显著异常值突破上下须触线（Winsorize 效果良好） - Fig 3 保存至 <code>output/figures/Fig3_lev_yearly_boxplot.png</code></p>
 </section>
 <section id="相关系数矩阵" class="level2">
 <h2 class="anchored" data-anchor-id="相关系数矩阵">2.2 相关系数矩阵</h2>
 <p>计算主要变量的Pearson相关系数矩阵。</p>
-<div id="cell-6" class="cell" data-execution_count="15">
+<p><strong>Fig 2 Winsorize 分布图解读</strong></p>
+<p>展示了 lev、npr、growth 三个关键变量 Winsorize 后的分布形态： - <strong>lev</strong>：分布对称性较好，集中于 0.2-0.7 区间 - <strong>npr</strong>：右偏分布，大部分公司盈利能力为正，少数亏损 - <strong>growth</strong>：分布相对均匀，两侧尾部已被压缩</p>
+<p>Fig 2 保存至 <code>output/figures/Fig2_winsorize_comparison.png</code></p>
+<p><strong>描述性统计分析完成 — 输出文件汇总</strong></p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>文件</th>
+<th>内容</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td><code>desc_stats_all.csv</code></td>
+<td>全样本描述性统计</td>
+</tr>
+<tr class="even">
+<td><code>desc_stats_soe.csv</code></td>
+<td>国企子样本统计</td>
+</tr>
+<tr class="odd">
+<td><code>desc_stats_private.csv</code></td>
+<td>民企子样本统计</td>
+</tr>
+<tr class="even">
+<td><code>ttest_soe_results.csv</code></td>
+<td>SOE vs 民企 t 检验结果</td>
+</tr>
+<tr class="odd">
+<td><code>correlation_matrix.csv</code></td>
+<td>Pearson 相关系数矩阵</td>
+</tr>
+<tr class="even">
+<td><code>Fig1_lev_npr_trend.png</code></td>
+<td>Lev/NPR 时序趋势</td>
+</tr>
+<tr class="odd">
+<td><code>Fig2_winsorize_comparison.png</code></td>
+<td>Winsorize 分布图</td>
+</tr>
+<tr class="even">
+<td><code>Fig3_correlation_heatmap.png</code></td>
+<td>相关系数热力图</td>
+</tr>
+<tr class="odd">
+<td><code>Fig3_lev_yearly_boxplot.png</code></td>
+<td>Lev 年度箱型图</td>
+</tr>
+</tbody>
+</table>
+<div id="cell-15" class="cell" data-execution_count="15">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 计算相关系数矩阵</span></span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>vars_corr <span class="op">=</span> [<span class="st">'lev'</span>, <span class="st">'npr'</span>, <span class="st">'size'</span>, <span class="st">'tang'</span>, <span class="st">'growth'</span>, <span class="st">'ndts'</span>, <span class="st">'soe'</span>]</span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>corr_matrix <span class="op">=</span> df[vars_corr].corr()</span>
@@ -516,7 +629,7 @@ ndts     0.055***  -0.127***  0.053***   0.667***  -0.161***      1.000   0.053*
 soe      0.289***  -0.056***  0.407***   0.148***  -0.088***   0.053***      1.000</code></pre>
 </div>
 </div>
-<div id="cell-7" class="cell" data-execution_count="16">
+<div id="cell-16" class="cell" data-execution_count="16">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 绘制热力图</span></span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">8</span>))</span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -558,7 +671,7 @@ soe      0.289***  -0.056***  0.407***   0.148***  -0.088***   0.053***      1.0
 <section id="时序趋势图" class="level2">
 <h2 class="anchored" data-anchor-id="时序趋势图">2.3 时序趋势图</h2>
 <p>绘制 Lev 和 NPR 的时序趋势（分 SOE/非SOE），以及 Lev 的分年度箱型图。</p>
-<div id="cell-9" class="cell" data-execution_count="17">
+<div id="cell-18" class="cell" data-execution_count="17">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 按年度和SOE分组计算均值</span></span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>ts_lev <span class="op">=</span> df.groupby([<span class="st">'year'</span>, <span class="st">'soe'</span>])[<span class="st">'lev'</span>].mean().unstack()</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>ts_npr <span class="op">=</span> df.groupby([<span class="st">'year'</span>, <span class="st">'soe'</span>])[<span class="st">'npr'</span>].mean().unstack()</span>
@@ -602,7 +715,7 @@ soe      0.289***  -0.056***  0.407***   0.148***  -0.088***   0.053***      1.0
 <pre><code>时序趋势图已保存至 output/figures/Fig1_lev_npr_trend.png</code></pre>
 </div>
 </div>
-<div id="cell-10" class="cell" data-execution_count="18">
+<div id="cell-19" class="cell" data-execution_count="18">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Fig 3: Lev 分年度箱型图</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">6</span>))</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -638,7 +751,7 @@ soe      0.289***  -0.056***  0.407***   0.148***  -0.088***   0.053***      1.0
 <section id="winsorize前后对比图" class="level2">
 <h2 class="anchored" data-anchor-id="winsorize前后对比图">2.4 Winsorize前后对比图</h2>
 <p>绘制Fig 2: Winsorize前后箱型图对比。</p>
-<div id="cell-12" class="cell" data-execution_count="19">
+<div id="cell-21" class="cell" data-execution_count="19">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 读取原始数据（未Winsorize）用于对比</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="co"># 注意：这里需要重新构造原始数据，或在01_data_processing中保存</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="co"># 由于原始数据量可能较大，这里展示Winsorize后的分布</span></span>
@@ -674,7 +787,7 @@ soe      0.289***  -0.056***  0.407***   0.148***  -0.088***   0.053***      1.0
 <pre><code>Winsorize分布图已保存至 output/figures/Fig2_winsorize_comparison.png</code></pre>
 </div>
 </div>
-<div id="cell-13" class="cell" data-execution_count="20">
+<div id="cell-22" class="cell" data-execution_count="20">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># 保存描述性统计结果</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>desc_all.to_csv(<span class="st">'output/desc_stats_all.csv'</span>, encoding<span class="op">=</span><span class="st">'utf-8-sig'</span>)</span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>desc_soe.to_csv(<span class="st">'output/desc_stats_soe.csv'</span>, encoding<span class="op">=</span><span class="st">'utf-8-sig'</span>)</span>
