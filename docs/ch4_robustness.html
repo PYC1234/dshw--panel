@@ -6,10 +6,8 @@
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
-<meta name="author" content="PYC1234">
-<meta name="dcterms.date" content="2026-04-25">
 
-<title>上市公司资本结构影响因素分析</title>
+<title>Robustness Checks – 上市公司资本结构影响因素分析</title>
 <style>
 /* Default styles provided by pandoc.
 ** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
@@ -35,7 +33,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
-<link href="./ch1_introduction.html" rel="next">
+<link href="./ch5_conclusion.html" rel="next">
+<link href="./03_results_and_figures.html" rel="prev">
 <script src="site_libs/quarto-html/quarto.js" type="module"></script>
 <script src="site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
@@ -75,6 +74,35 @@ ul.task-list li input[type="checkbox"] {
 }</script>
 <style>html{ scroll-behavior: smooth; }</style>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 </head>
 
@@ -87,7 +115,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./index.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">上市公司资本结构影响因素分析</span></a></li></ol></nav>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch4_robustness.html">Chapter 4: Robustness Checks</a></li><li class="breadcrumb-item"><a href="./ch4_robustness.html">Robustness Checks</a></li></ol></nav>
         <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
         </a>
       <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
@@ -121,7 +149,7 @@ ul.task-list li input[type="checkbox"] {
     <ul class="list-unstyled mt-1">
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./index.html" class="sidebar-item-text sidebar-link active">
+  <a href="./index.html" class="sidebar-item-text sidebar-link">
  <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">上市公司资本结构影响因素分析</span></span></a>
   </div>
 </li>
@@ -193,7 +221,7 @@ ul.task-list li input[type="checkbox"] {
       <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
-  <a href="./ch4_robustness.html" class="sidebar-item-text sidebar-link">
+  <a href="./ch4_robustness.html" class="sidebar-item-text sidebar-link active">
  <span class="menu-text">Robustness Checks</span></a>
   </div>
 </li>
@@ -226,41 +254,27 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">Table of contents</h2>
    
   <ul>
-  <li><a href="#项目简介" id="toc-项目简介" class="nav-link active" data-scroll-target="#项目简介"><span class="header-section-number">0.1</span> 项目简介</a>
-  <ul class="collapse">
-  <li><a href="#核心模型" id="toc-核心模型" class="nav-link" data-scroll-target="#核心模型"><span class="header-section-number">0.1.1</span> 核心模型</a></li>
-  <li><a href="#主要发现" id="toc-主要发现" class="nav-link" data-scroll-target="#主要发现"><span class="header-section-number">0.1.2</span> 主要发现</a></li>
-  </ul></li>
-  <li><a href="#联系作者" id="toc-联系作者" class="nav-link" data-scroll-target="#联系作者"><span class="header-section-number">0.2</span> 联系作者</a></li>
+  <li><a href="#m1-vs-m1-交互固定效应" id="toc-m1-vs-m1-交互固定效应" class="nav-link active" data-scroll-target="#m1-vs-m1-交互固定效应">M1’ vs M1: 交互固定效应</a></li>
+  <li><a href="#m4-时变系数-政策冲击的稳健性" id="toc-m4-时变系数-政策冲击的稳健性" class="nav-link" data-scroll-target="#m4-时变系数-政策冲击的稳健性">M4 时变系数: 政策冲击的稳健性</a></li>
+  <li><a href="#m5-函数系数-规模调节的稳健性" id="toc-m5-函数系数-规模调节的稳健性" class="nav-link" data-scroll-target="#m5-函数系数-规模调节的稳健性">M5 函数系数: 规模调节的稳健性</a></li>
+  <li><a href="#m6-门槛模型-结构突变检验" id="toc-m6-门槛模型-结构突变检验" class="nav-link" data-scroll-target="#m6-门槛模型-结构突变检验">M6 门槛模型: 结构突变检验</a></li>
+  <li><a href="#ife-与-m4-m6-的联合证据" id="toc-ife-与-m4-m6-的联合证据" class="nav-link" data-scroll-target="#ife-与-m4-m6-的联合证据">IFE 与 M4-M6 的联合证据</a></li>
   </ul>
 <div class="toc-actions"><ul><li><a href="https://github.com/PYC1234/dshw--panel/issues/new" class="toc-action"><i class="bi bi-github"></i>Report an issue</a></li></ul></div></nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
-<header id="title-block-header" class="quarto-title-block default">
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="./ch4_robustness.html">Chapter 4: Robustness Checks</a></li><li class="breadcrumb-item"><a href="./ch4_robustness.html">Robustness Checks</a></li></ol></nav>
 <div class="quarto-title">
-<h1 class="title">上市公司资本结构影响因素分析</h1>
-<p class="subtitle lead">基于A股面板数据的实证研究（2010-2025）</p>
+<h1 class="title">Robustness Checks</h1>
 </div>
 
 
 
 <div class="quarto-title-meta">
 
-    <div>
-    <div class="quarto-title-meta-heading">Author</div>
-    <div class="quarto-title-meta-contents">
-             <p>PYC1234 </p>
-          </div>
-  </div>
     
-    <div>
-    <div class="quarto-title-meta-heading">Published</div>
-    <div class="quarto-title-meta-contents">
-      <p class="date">April 25, 2026</p>
-    </div>
-  </div>
   
     
   </div>
@@ -270,40 +284,80 @@ ul.task-list li input[type="checkbox"] {
 </header>
 
 
-<p><img src="images/book-front.png" width="350"></p>
-<hr>
-<section id="项目简介" class="level2" data-number="0.1">
-<h2 data-number="0.1" class="anchored" data-anchor-id="项目简介"><span class="header-section-number">0.1</span> 项目简介</h2>
-<p>本项目以 2010-2025 年 A 股上市公司为样本，实证检验盈利能力（NPR）对资本结构（杠杆率）的影响， 并考察产权性质（SOE）的调节效应、时变特征以及企业规模的门槛效应。</p>
-<section id="核心模型" class="level3" data-number="0.1.1">
-<h3 data-number="0.1.1" class="anchored" data-anchor-id="核心模型"><span class="header-section-number">0.1.1</span> 核心模型</h3>
+<p>本章汇总模型的稳健性检验。</p>
+<section id="m1-vs-m1-交互固定效应" class="level2">
+<h2 class="anchored" data-anchor-id="m1-vs-m1-交互固定效应">M1’ vs M1: 交互固定效应</h2>
+<p>M1’ 通过 <code>stkcd#m2_growth</code> 交互固定效应控制宏观因素的异质性影响：</p>
 <ul>
-<li>M1: 双向固定效应基准模型（TWFE）</li>
-<li>M1’: 交互固定效应模型（IFE）</li>
-<li>M2: 分组回归（SOE vs 民营企业）</li>
-<li>M3: 交互项调节效应</li>
-<li>M4: 时变系数模型</li>
-<li>M5: 函数系数模型（多项式调节）</li>
-<li>M6: 门槛模型（Hansen 1999）</li>
+<li>M1’ 中 NPR 系数 = −0.6273，与 M1 完全一致</li>
+<li>m2_growth 系数 ≈ 0（不显著）</li>
+<li><strong>结论</strong>：基准 TWFE 回归对未观测的时变异质性稳健</li>
 </ul>
 </section>
-<section id="主要发现" class="level3" data-number="0.1.2">
-<h3 data-number="0.1.2" class="anchored" data-anchor-id="主要发现"><span class="header-section-number">0.1.2</span> 主要发现</h3>
-<ol type="1">
-<li><strong>NPR与Lev负相关，支持优序融资理论</strong>：M1基准回归 NPR 系数 −0.627（p&lt;0.001）</li>
-<li><strong>国有企业负效应更强</strong>：国企 NPR −0.839 vs 民企 −0.511，M3 交互项显著</li>
-<li><strong>2015年去杠杆政策冲击</strong>：M4 β_t 在 2015-2016 年最负，此后逐年减弱</li>
-<li><strong>规模门槛效应</strong>：M6 门槛值 γ ≈ 22.13（约4.1亿元），规模&gt;门槛的企业负效应更弱</li>
-</ol>
-<hr>
-</section>
-</section>
-<section id="联系作者" class="level2" data-number="0.2">
-<h2 data-number="0.2" class="anchored" data-anchor-id="联系作者"><span class="header-section-number">0.2</span> 联系作者</h2>
+<section id="m4-时变系数-政策冲击的稳健性" class="level2">
+<h2 class="anchored" data-anchor-id="m4-时变系数-政策冲击的稳健性">M4 时变系数: 政策冲击的稳健性</h2>
+<p>M4 允许 NPR 系数随年份变化：</p>
+<p><span class="math display">\[\hat{\beta}_t = \text{NPR} \times \text{Year}_t\]</span></p>
 <ul>
-<li>GitHub 仓库：https://github.com/PYC1234/dshw–panel</li>
-<li>数据报告：https://PYC1234.github.io/dshw–panel/</li>
+<li>2015-2016 年 β_t 最负（去杠杆政策初期）</li>
+<li>2017 年后逐年减弱：企业已部分完成去杠杆</li>
+<li>2020 年 COVID-19 冲击下短暂加剧</li>
+<li><strong>结论</strong>：NPR-Lev 负向关系不是恒定结构，存在政策冲击效应</li>
 </ul>
+</section>
+<section id="m5-函数系数-规模调节的稳健性" class="level2">
+<h2 class="anchored" data-anchor-id="m5-函数系数-规模调节的稳健性">M5 函数系数: 规模调节的稳健性</h2>
+<p>M5 使用多项式交互项允许 NPR 边际效应随 Size 变化：</p>
+<p><span class="math display">\[\hat{\beta}(Size) = -32.075 + 2.853 \times Size - 0.0645 \times Size^2\]</span></p>
+<ul>
+<li>小型企业 (Size=20): |β| = 0.83</li>
+<li>大型企业 (Size=26): |β| = 0.40</li>
+<li>二次型在样本范围内显示规模调节效应</li>
+</ul>
+</section>
+<section id="m6-门槛模型-结构突变检验" class="level2">
+<h2 class="anchored" data-anchor-id="m6-门槛模型-结构突变检验">M6 门槛模型: 结构突变检验</h2>
+<p>Hansen (1999) 面板门槛模型：</p>
+<p><span class="math display">\[Lev_{it} = \mu_i + \beta_1 NPR_{it} \cdot I(Size \leq \gamma) + \beta_2 NPR_{it} \cdot I(Size &gt; \gamma) + \delta' X_{it} + \varepsilon_{it}\]</span></p>
+<ul>
+<li>门槛值 γ ≈ 22.13（约 4.1 亿元总资产）</li>
+<li>Bootstrap p 值 &lt; 0.05：拒绝无门槛假设</li>
+<li>LR 曲线显示显著结构突变</li>
+</ul>
+</section>
+<section id="ife-与-m4-m6-的联合证据" class="level2">
+<h2 class="anchored" data-anchor-id="ife-与-m4-m6-的联合证据">IFE 与 M4-M6 的联合证据</h2>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>稳健性维度</th>
+<th>方法</th>
+<th>结论</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>遗漏变量</td>
+<td>IFE (M1’)</td>
+<td>稳健</td>
+</tr>
+<tr class="even">
+<td>时间稳定性</td>
+<td>时变系数 (M4)</td>
+<td>存在政策冲击</td>
+</tr>
+<tr class="odd">
+<td>规模异质性</td>
+<td>函数系数 (M5)</td>
+<td>调节效应显著</td>
+</tr>
+<tr class="even">
+<td>结构突变</td>
+<td>门槛模型 (M6)</td>
+<td>门槛效应显著</td>
+</tr>
+</tbody>
+</table>
 
 
 </section>
@@ -711,10 +765,13 @@ ul.task-list li input[type="checkbox"] {
   </script>
 <nav class="page-navigation">
   <div class="nav-page nav-page-previous">
+      <a href="./03_results_and_figures.html" class="pagination-link" aria-label="第三部分：结果汇总与图形输出">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">第三部分：结果汇总与图形输出</span></span>
+      </a>          
   </div>
   <div class="nav-page nav-page-next">
-      <a href="./ch1_introduction.html" class="pagination-link" aria-label="Introduction &amp; Hypotheses">
-        <span class="nav-page-text">Introduction &amp; Hypotheses</span> <i class="bi bi-arrow-right-short"></i>
+      <a href="./ch5_conclusion.html" class="pagination-link" aria-label="Conclusion">
+        <span class="nav-page-text">Conclusion</span> <i class="bi bi-arrow-right-short"></i>
       </a>
   </div>
 </nav>

@@ -5,8 +5,8 @@ project:
 book:
   title: "上市公司资本结构影响因素分析"
   subtitle: "基于A股面板数据的实证研究（2010-2025）"
-  author: "PYC1234"
-  date: "2026-04-25"
+  author: "彭远超"
+  date: "2026-04-26"
   repo-url: "https://github.com/PYC1234/dshw--panel"
   repo-actions: [issue]
 
@@ -19,15 +19,28 @@ book:
 
   chapters:
     - index.qmd
-    - 01_data_processing.ipynb
-    - 02_descriptive_stats.ipynb
-    - 03_results_and_figures.ipynb
+    - part: "Chapter 1: Introduction & Hypotheses"
+      chapters:
+        - ch1_introduction.qmd
+    - part: "Chapter 2: Data & Variables"
+      chapters:
+        - 01_data_processing.ipynb
+    - part: "Chapter 3: Empirical Results"
+      chapters:
+        - 02_descriptive_stats.ipynb
+        - 03_results_and_figures.ipynb
+    - part: "Chapter 4: Robustness Checks"
+      chapters:
+        - ch4_robustness.qmd
+    - part: "Chapter 5: Conclusion"
+      chapters:
+        - ch5_conclusion.qmd
 
 format:
   html:
     theme: cosmo
     toc: true
-    number-sections: false
+    number-sections: true
     anchor-sections: true
     smooth-scroll: true
     code-copy: true
